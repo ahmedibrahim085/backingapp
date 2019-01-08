@@ -3,27 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:baselineAligned="false"
-    android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    android:showDividers="middle"
     tools:context=".ui.MainActivity">
 
-    <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/list_recipe"
-        android:name="com.ahmed.bakingapp.ItemListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layoutDirection="locale"
-        android:orientation="horizontal"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:context="com.ahmed.bakingapp.ui.MainActivity"
-        tools:listitem="@layout/list_recipes_content" />
+    <android.support.v7.widget.RecyclerView
+    android:id="@+id/list_recipe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:orientation="horizontal"
+    app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+    tools:context="com.ahmed.bakingapp.ui.MainActivity"
+    tools:listitem="@layout/list_recipes_content" />
 
 </LinearLayout>

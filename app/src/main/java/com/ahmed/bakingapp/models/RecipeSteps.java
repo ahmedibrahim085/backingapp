@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-class RecipeSteps implements Serializable {
+public class RecipeSteps implements Serializable {
+
+
 
     private static final String TAG = RecipeSteps.class.getSimpleName();
     // Recipe Steps JSON UiConstants

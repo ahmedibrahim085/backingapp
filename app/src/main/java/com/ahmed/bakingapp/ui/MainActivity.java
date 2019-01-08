@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +13,7 @@ import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.network.Generator;
 import com.ahmed.bakingapp.network.RecipeClient;
+import com.ahmed.bakingapp.ui.RecipeDetails.RecipeDetailsActivity;
 import com.ahmed.bakingapp.ui.recipes.RecipesAdapter;
 
 import java.util.ArrayList;
@@ -51,11 +51,11 @@ public class MainActivity extends AppCompatActivity {
             // large-screen layouts (res/values-w900dp).
             // If this view is present, then the
             // activity should be in two-pane mode.
-            UiConstants.setmTwoPan(true);
+            UiConstants.setTwoPan(true);
         }else {
-            UiConstants.setmTwoPan(false);
+            UiConstants.setTwoPan(false);
         }
-        Log.d(TAG, "twoPane - MainActivity - onCreate - is:"+UiConstants.ismTwoPan());
+        Log.d(TAG, "twoPane - MainActivity - onCreate - is:"+UiConstants.isTwoPan());
         initUI();
         getRecipes();
 
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.list_recipe);
         assert recyclerView != null;
         // Add layout manager to manage layout
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // Add adapter to handle data from data source to view
         recipesAdapter = new RecipesAdapter(new ArrayList<RecipeItem>());
         recyclerView.setAdapter(recipesAdapter);
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         RecipeClient recipeClient = Generator.createService(RecipeClient.class);
         Call<List<RecipeItem>> call = recipeClient.getRecipes("baking.json");
         call.enqueue(new Callback<List<RecipeItem>>() {
+            // TODO handle NO Internet Connection cases
             @Override
             public void onResponse(@NonNull Call<List<RecipeItem>> call, @NonNull Response<List<RecipeItem>> response) {
                 recipesAdapter.updateList(response.body());
@@ -127,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     private void showRecipeDetails(RecipeItem recipeItem){
         Log.d(TAG, "recipeItem clicked is  : "+ recipeItem.getRecipeItemName());
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
-        intent.putExtra(UiConstants.getReccipeItem(), recipeItem);
+        intent.putExtra(UiConstants.getRecipeItem(), recipeItem);
         startActivity(intent);
     }
     // ======= ======= ======= Open RecipeDetails Activity  ======= END/FIN ======= =======

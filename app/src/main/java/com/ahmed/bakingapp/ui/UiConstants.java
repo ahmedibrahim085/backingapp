@@ -1,23 +1,38 @@
 package com.ahmed.bakingapp.ui;
 
-class UiConstants {
+import com.ahmed.bakingapp.models.RecipeSteps;
+
+import java.util.List;
+
+public class UiConstants {
+    // Booleans
+    private static boolean twoPan;
+
+    // Strings
+    final private static String RECIPE_ITEM = "recipeItem";
+
+    private static List<RecipeSteps> selectedRecipeSteps;
 
     // ======= ======= ======= Strings ======= ======= =======
-    final private static String RECCIPE_ITEM = "recipeItem";
-
-    static String getReccipeItem() {
-        return RECCIPE_ITEM;
+    public static String getRecipeItem() {
+        return RECIPE_ITEM;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======
 
-    private static boolean mTwoPan;
-
-    public static boolean ismTwoPan() {
-        return mTwoPan;
+    public static boolean isTwoPan() {
+        return twoPan;
     }
 
-    public static void setmTwoPan(boolean mTwoPan) {
-        UiConstants.mTwoPan = mTwoPan;
+    public static void setTwoPan(boolean twoPan) {
+        UiConstants.twoPan = twoPan;
+    }
+
+    public static List<RecipeSteps> getSelectedRecipeSteps() {
+        return selectedRecipeSteps;
+    }
+
+    public static void setSelectedRecipeSteps(List<RecipeSteps> selectedRecipeSteps) {
+        UiConstants.selectedRecipeSteps = selectedRecipeSteps;
     }
 }
