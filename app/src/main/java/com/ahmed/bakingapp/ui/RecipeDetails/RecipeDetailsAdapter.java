@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeSteps;
-import com.ahmed.bakingapp.ui.UiConstants;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .list_recipes_content, parent, false);
-        return new RecipeDetailsViewHolder(view,onRecipeDetailClicked);
+        return new RecipeDetailsViewHolder(view, onRecipeDetailClicked);
     }
 
     @Override
@@ -38,10 +37,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
 
     @Override
     public int getItemCount() {
-        if (recipeSteps == null){
-            recipeSteps = UiConstants.getSelectedRecipeSteps();
-        }
-        return recipeSteps.size();
+        return recipeSteps == null ? 0 : recipeSteps.size();
     }
 
     // ========================================================
@@ -52,7 +48,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
     }
 
     public void updateList(List<RecipeSteps> recipeSteps) {
-        if (recipeSteps !=null && recipeSteps.size()>0) {
+        if (recipeSteps != null && recipeSteps.size() > 0) {
             recipeSteps.clear();
             recipeSteps.addAll(recipeSteps);
             notifyDataSetChanged();

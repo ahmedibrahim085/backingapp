@@ -12,19 +12,21 @@ import android.widget.Toast;
 
 import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
+import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.MainActivity;
 import com.ahmed.bakingapp.ui.UiConstants;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipeDetailClicked{
 
     FragmentManager fragmentManager;
     RecipeItem recipeItem;
-    List<RecipeSteps> recipeSteps;
-    RecipeDetailsFragment recipeDetailsFragment;
+    List<RecipeSteps> recipeStepsList;
+    List<RecipeIngredients> recipeIngredientsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,16 +34,14 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         setContentView(R.layout.activity_recipe_details);
         if (getIntent()!=null) {
             if (getIntent().hasExtra(UiConstants.getRecipeItem())) {
-                recipeItem = (RecipeItem) getIntent().getExtras().getSerializable(UiConstants.getRecipeItem());
-                recipeSteps = recipeItem.getRecipeItemSteps();
-                UiConstants.setSelectedRecipeSteps(recipeSteps);
-
+                recipeItem = (RecipeItem) Objects.requireNonNull(getIntent().getExtras()).getSerializable(UiConstants.getRecipeItem());
+                recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
+                recipeIngredientsList = recipeItem.getRecipeItemIngredients();
                 initBars();
                 initFragments();
                 Toast.makeText(this,"you clicked : "+recipeItem.getRecipeItemName() , Toast
                         .LENGTH_LONG).show();
             }
-
         }else {
             Toast.makeText(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail",
                     Toast
@@ -66,9 +66,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
     }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
-        recipeDetailsFragment = new RecipeDetailsFragment();
         fragmentManager.beginTransaction()
-                .add(R.id.fragment_master_recipe_details_list, recipeDetailsFragment)
+                .add(R.id.fragment_master_recipe_details_list, RecipeDetailsFragment.newInstance
+                        (recipeStepsList,recipeIngredientsList ))
                 .commit();
     }
     @Override
@@ -89,7 +89,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
 
     @Override
     public void onRecipeDetailItemSelected(int position) {
-
+        Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
     }
 
     @Override

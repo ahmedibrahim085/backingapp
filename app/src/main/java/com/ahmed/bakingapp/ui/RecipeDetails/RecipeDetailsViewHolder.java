@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeSteps;
 
 public class RecipeDetailsViewHolder extends RecyclerView.ViewHolder {
@@ -14,16 +15,12 @@ public class RecipeDetailsViewHolder extends RecyclerView.ViewHolder {
 
     public RecipeDetailsViewHolder(@NonNull View itemView, OnRecipeDetailClicked onRecipeDetailClicked) {
         super(itemView);
+        itemView.setTag(this);
+        itemView.setOnClickListener(onRecipeDetailClicked);
+        textView = itemView.findViewById(R.id.tv_recipes_names);
     }
 
-/*    public RecipesViewHolder(@NonNull View itemView, View.OnClickListener onItemClickListener) {
-        super(itemView);
-        itemView.setTag(this);
-        itemView.setOnClickListener(onItemClickListener);
-        textView = itemView.findViewById(R.id.tv_recipes_names);
-    }*/
-
     public void bindData(RecipeSteps recipeSteps) {
-        //        textView.setText(recipeItem.getRecipeItemName());
+                textView.setText(recipeSteps.getStepsShortDescription());
     }
 }

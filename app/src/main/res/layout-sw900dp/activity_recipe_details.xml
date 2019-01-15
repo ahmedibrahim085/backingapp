@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:baselineAligned="false"
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/fragment_master_recipe_details_list"
+        android:layout_width="400dp"
+        android:layout_height="match_parent"/>
+
+    <!--Small Divider-->
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:background="@android:color/darker_gray" />
+
+    <!--Linear Layout to host & Arrange All the three Android-Me Part Images Vertically-->
+    <!-- LinearLayout for holding three Android-Me images -->
+    <LinearLayout
+        android:id="@+id/android_me_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <!-- This container holds the head HeadBodyPartFragment of the custom Android-Me image -->
+        <FrameLayout
+            android:id="@+id/head_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+
+</LinearLayout>
