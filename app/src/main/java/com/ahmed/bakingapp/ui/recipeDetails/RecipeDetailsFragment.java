@@ -1,4 +1,4 @@
-package com.ahmed.bakingapp.ui.RecipeDetails;
+package com.ahmed.bakingapp.ui.recipeDetails;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,10 +9,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
-import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.models.RecipeSteps;
 
 import java.io.Serializable;
@@ -25,9 +25,10 @@ public class RecipeDetailsFragment extends Fragment {
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients>recipeIngredientsList;
     RecipeDetailsAdapter recipeDetailsAdapter;
-    private List<RecipeItem> recipeItems;
     private RecyclerView recyclerView;
     private View rootView;
+    private TextView tv_recipe_ingredients;
+
 
     public static RecipeDetailsFragment newInstance(List<RecipeSteps> recipeSteps,
                                                     List<RecipeIngredients> recipeIngredients) {
@@ -62,6 +63,8 @@ public class RecipeDetailsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_recipedetails_master_list,
                 container, false);
         setRootView(view);
+        tv_recipe_ingredients = getRootView().findViewById(R.id.tv_recipe_ingredients);
+        tv_recipe_ingredients.setText("Ingredients");
         initRecipeDetailsListRecyclerView();
         return view;
     }
@@ -83,14 +86,5 @@ public class RecipeDetailsFragment extends Fragment {
         // Add adapter to handle data from data source to view
         recipeDetailsAdapter = new RecipeDetailsAdapter(recipeStepsList);
         recyclerView.setAdapter(recipeDetailsAdapter);
-        // to Open the Movie Details when click on the item in the recycle view
-       /* recipeDetailsAdapter.onRecipeDetailClicked(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
-                int position = viewHolder.getAdapterPosition();
-                RecipeSteps recipeSteps = recipeDetailsAdapter.getRecipeDetailsItems(position);
-            }
-        });*/
     }
 }

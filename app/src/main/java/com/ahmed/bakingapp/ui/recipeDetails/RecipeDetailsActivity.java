@@ -1,4 +1,4 @@
-package com.ahmed.bakingapp.ui.RecipeDetails;
+package com.ahmed.bakingapp.ui.recipeDetails;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,8 +39,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
                 recipeIngredientsList = recipeItem.getRecipeItemIngredients();
                 initBars();
                 initFragments();
-                Toast.makeText(this,"you clicked : "+recipeItem.getRecipeItemName() , Toast
-                        .LENGTH_LONG).show();
             }
         }else {
             Toast.makeText(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail",

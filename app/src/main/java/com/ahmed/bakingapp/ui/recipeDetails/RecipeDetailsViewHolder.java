@@ -1,4 +1,4 @@
-package com.ahmed.bakingapp.ui.RecipeDetails;
+package com.ahmed.bakingapp.ui.recipeDetails;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +11,17 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 public class RecipeDetailsViewHolder extends RecyclerView.ViewHolder {
 
     private static final String TAG = RecipeDetailsViewHolder.class.getSimpleName();
-    private TextView textView;
+    private TextView tv_recipe_steps;
+
 
     public RecipeDetailsViewHolder(@NonNull View itemView, OnRecipeDetailClicked onRecipeDetailClicked) {
         super(itemView);
         itemView.setTag(this);
         itemView.setOnClickListener(onRecipeDetailClicked);
-        textView = itemView.findViewById(R.id.tv_recipes_names);
+        tv_recipe_steps = itemView.findViewById(R.id.tv_recipe_steps);
     }
 
     public void bindData(RecipeSteps recipeSteps) {
-                textView.setText(recipeSteps.getStepsShortDescription());
+        tv_recipe_steps.setText(recipeSteps.getStepsShortDescription());
     }
 }

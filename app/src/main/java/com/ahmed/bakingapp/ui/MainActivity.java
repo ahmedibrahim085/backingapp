@@ -13,7 +13,7 @@ import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.network.Generator;
 import com.ahmed.bakingapp.network.RecipeClient;
-import com.ahmed.bakingapp.ui.RecipeDetails.RecipeDetailsActivity;
+import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsActivity;
 import com.ahmed.bakingapp.ui.recipes.RecipesAdapter;
 
 import java.util.ArrayList;
@@ -124,14 +124,14 @@ public class MainActivity extends AppCompatActivity {
 
     // ======= ======= ======= Networking Get Recipe  ======= END/FIN ======= =======
 
-    // ======= ======= ======= Open RecipeDetails Activity  ======= START ======= =======
+    // ======= ======= ======= Open recipeDetails Activity  ======= START ======= =======
     private void showRecipeDetails(RecipeItem recipeItem){
         Log.d(TAG, "recipeItem clicked is  : "+ recipeItem.getRecipeItemName());
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(UiConstants.getRecipeItem(), recipeItem);
         startActivity(intent);
     }
-    // ======= ======= ======= Open RecipeDetails Activity  ======= END/FIN ======= =======
+    // ======= ======= ======= Open recipeDetails Activity  ======= END/FIN ======= =======
 
 
     // ======= ======= ======= Local Helper Methods  ======= START ======= =======

@@ -1,4 +1,4 @@
-package com.ahmed.bakingapp.ui.RecipeDetails;
+package com.ahmed.bakingapp.ui.recipeDetails;
 
 import android.view.View;
 

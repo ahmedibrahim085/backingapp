@@ -1,4 +1,4 @@
-package com.ahmed.bakingapp.ui.RecipeDetails;
+package com.ahmed.bakingapp.ui.recipeDetails;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -26,7 +26,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
         // view holder is abstract
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
-                .list_recipes_content, parent, false);
+                .list_recipes_details_content, parent, false);
         return new RecipeDetailsViewHolder(view, onRecipeDetailClicked);
     }
 
