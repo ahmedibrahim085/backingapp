@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
@@ -16,6 +15,7 @@ import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.MainActivity;
 import com.ahmed.bakingapp.ui.UiConstants;
+import com.ahmed.bakingapp.utils.AppToast;
 
 import java.util.List;
 import java.util.Objects;
@@ -40,9 +40,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 initFragments();
             }
         }else {
-            Toast.makeText(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail",
-                    Toast
-                    .LENGTH_LONG).show();
+            AppToast.showLong(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail");
             finish();
         }
     }

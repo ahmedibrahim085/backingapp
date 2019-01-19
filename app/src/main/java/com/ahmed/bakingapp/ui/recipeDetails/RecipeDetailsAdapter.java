@@ -11,13 +11,13 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 
 import java.util.List;
 
-public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsViewHolder>  {
+public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsViewHolder> {
 
     private List<RecipeSteps> recipeSteps;
     private View.OnClickListener onItemClickListener;
 
 
-    public RecipeDetailsAdapter(List<RecipeSteps> recipeStepsList) {
+    RecipeDetailsAdapter(List<RecipeSteps> recipeStepsList) {
         this.recipeSteps = recipeStepsList;
     }
 
@@ -48,15 +48,8 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
         return recipeSteps.get(position);
     }
 
-    public void updateList(List<RecipeSteps> recipeSteps) {
-        if (recipeSteps != null && recipeSteps.size() > 0) {
-            recipeSteps.clear();
-            recipeSteps.addAll(recipeSteps);
-            notifyDataSetChanged();
-        }
-    }
 
-    public void setItemClickListener(View.OnClickListener clickListener) {
+    void setItemClickListener(View.OnClickListener clickListener) {
         onItemClickListener = clickListener;
     }
 

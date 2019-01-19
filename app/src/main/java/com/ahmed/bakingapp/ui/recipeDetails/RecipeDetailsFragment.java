@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeSteps;
+import com.ahmed.bakingapp.utils.AppToast;
 
 import java.io.Serializable;
 import java.util.List;
@@ -98,8 +99,7 @@ public class RecipeDetailsFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
                 int position = viewHolder.getAdapterPosition();
                 RecipeSteps recipeStep = recipeDetailsAdapter.getRecipeStepDetailsItems(position);
-                Toast.makeText(getContext(), "you selected Recipe Detail position :"+position,
-                        Toast.LENGTH_LONG).show();
+                AppToast.showLong(getContext(), "you selected Recipe Detail position :"+position);
                 showRecipeStepDetails(recipeStep);
             }
         });
