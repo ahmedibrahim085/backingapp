@@ -19,7 +19,7 @@
         android:layout_marginEnd="@dimen/margin4"
         android:background="@android:color/darker_gray" />
 
-    <!--Linear Layout to host & Arrange All the three Android-Me Part Images Vertically-->
+    <!--Linear Layout to host & Arrange All the Recipe Steps Description Vertically-->
     <!-- LinearLayout for holding three Android-Me images -->
     <LinearLayout
         android:id="@+id/android_me_linear_layout"

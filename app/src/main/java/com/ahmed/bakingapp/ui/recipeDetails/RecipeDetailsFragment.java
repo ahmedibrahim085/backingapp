@@ -1,15 +1,16 @@
 package com.ahmed.bakingapp.ui.recipeDetails;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
@@ -21,7 +22,6 @@ import java.util.List;
 public class RecipeDetailsFragment extends Fragment {
 
     private static final String TAG = RecipeDetailsFragment.class.getSimpleName();
-    OnRecipeDetailClicked onRecipeDetailClicked;
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients>recipeIngredientsList;
     RecipeDetailsAdapter recipeDetailsAdapter;
@@ -63,20 +63,26 @@ public class RecipeDetailsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_recipedetails_master_list,
                 container, false);
         setRootView(view);
-        tv_recipe_ingredients = getRootView().findViewById(R.id.tv_recipe_ingredients);
-        tv_recipe_ingredients.setText("Ingredients");
+        initiateRecipeIngredient();
         initRecipeDetailsListRecyclerView();
         return view;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            onRecipeDetailClicked = (OnRecipeDetailClicked) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement OnItemClick Listener");
-        }
+    private void initiateRecipeIngredient(){
+        tv_recipe_ingredients = getRootView().findViewById(R.id.tv_recipe_ingredients);
+        tv_recipe_ingredients.setText("Ingredients");
+        tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRecipeIngredientDetails(recipeIngredientsList);
+                Toast.makeText(getContext(), "Recipe Ingredient clicked :",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void showRecipeIngredientDetails(List<RecipeIngredients> recipeIngredients) {
+        Log.e(TAG,"recipeIngredients : "+recipeIngredients );
     }
 
     private void initRecipeDetailsListRecyclerView() {
@@ -85,6 +91,24 @@ public class RecipeDetailsFragment extends Fragment {
         // Add layout manager to manage layout
         // Add adapter to handle data from data source to view
         recipeDetailsAdapter = new RecipeDetailsAdapter(recipeStepsList);
+        // to Open the Recipe Details when click on the item in the recycle view
+        recipeDetailsAdapter.setItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
+                int position = viewHolder.getAdapterPosition();
+                RecipeSteps recipeStep = recipeDetailsAdapter.getRecipeStepDetailsItems(position);
+                Toast.makeText(getContext(), "you selected Recipe Detail position :"+position,
+                        Toast.LENGTH_LONG).show();
+                showRecipeStepDetails(recipeStep);
+            }
+        });
         recyclerView.setAdapter(recipeDetailsAdapter);
     }
+
+    private void showRecipeStepDetails(RecipeSteps recipeStep) {
+        Log.e(TAG,"recipeStep : "+recipeStep );
+    }
+
+
 }

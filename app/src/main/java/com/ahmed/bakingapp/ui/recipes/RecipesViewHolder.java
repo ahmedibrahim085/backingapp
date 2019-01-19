@@ -8,13 +8,13 @@ import android.widget.TextView;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeItem;
 
-public class RecipesViewHolder extends RecyclerView.ViewHolder {
+class RecipesViewHolder extends RecyclerView.ViewHolder {
 
     private static final String TAG = RecipesViewHolder.class.getSimpleName();
 
     private TextView textView;
 
-    public RecipesViewHolder(@NonNull View itemView, View.OnClickListener onItemClickListener) {
+    RecipesViewHolder(@NonNull View itemView, View.OnClickListener onItemClickListener) {
         super(itemView);
         itemView.setTag(this);
         itemView.setOnClickListener(onItemClickListener);
@@ -22,7 +22,7 @@ public class RecipesViewHolder extends RecyclerView.ViewHolder {
     }
 
 
-    public void bindData(RecipeItem recipeItem) {
+    void bindData(RecipeItem recipeItem) {
         textView.setText(recipeItem.getRecipeItemName());
     }
 }

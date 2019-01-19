@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         // Add adapter to handle data from data source to view
         recipesAdapter = new RecipesAdapter(new ArrayList<RecipeItem>());
         recyclerView.setAdapter(recipesAdapter);
-        // to Open the Movie Details when click on the item in the recycle view
+        // to Open the Recipe Details when click on the item in the recycle view
         recipesAdapter.setItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

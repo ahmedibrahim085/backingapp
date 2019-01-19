@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.ahmed.bakingapp.App;
@@ -21,7 +20,7 @@ import com.ahmed.bakingapp.ui.UiConstants;
 import java.util.List;
 import java.util.Objects;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipeDetailClicked{
+public class RecipeDetailsActivity extends AppCompatActivity {
 
     FragmentManager fragmentManager;
     RecipeItem recipeItem;
@@ -85,13 +84,4 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onRecipeDetailItemSelected(int position) {
-        Toast.makeText(this, position+"", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onClick(View v) {
-
-    }
 }

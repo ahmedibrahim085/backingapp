@@ -11,10 +11,11 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 
 import java.util.List;
 
-public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsViewHolder> {
+public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsViewHolder>  {
 
     private List<RecipeSteps> recipeSteps;
-    OnRecipeDetailClicked onRecipeDetailClicked;
+    private View.OnClickListener onItemClickListener;
+
 
     public RecipeDetailsAdapter(List<RecipeSteps> recipeStepsList) {
         this.recipeSteps = recipeStepsList;
@@ -27,7 +28,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout
                 .list_recipes_details_content, parent, false);
-        return new RecipeDetailsViewHolder(view, onRecipeDetailClicked);
+        return new RecipeDetailsViewHolder(view, onItemClickListener);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
     // ========================================================
 
 
-    public RecipeSteps getRecipeDetailsItems(int position) {
+    RecipeSteps getRecipeStepDetailsItems(int position) {
         return recipeSteps.get(position);
     }
 
@@ -55,10 +56,9 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
         }
     }
 
-    public void onRecipeDetailClicked(OnRecipeDetailClicked onClickListener) {
-        onRecipeDetailClicked = onClickListener;
+    public void setItemClickListener(View.OnClickListener clickListener) {
+        onItemClickListener = clickListener;
     }
 
-    public void onRecipeDetailClicked(View.OnClickListener onClickListener) {
-    }
+
 }
