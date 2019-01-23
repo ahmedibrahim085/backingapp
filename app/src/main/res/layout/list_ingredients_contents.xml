@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_ingredients_contents"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin4"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    tools:itemCount="5"
+    >
+
+    <TextView
+        android:id="@+id/tv_ingredient_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:text="@string/ingredient_quantity"
+        tools:text="@string/ingredient_quantity" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_quantity_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:layout_toEndOf="@id/tv_ingredient_quantity"
+        tools:text="2" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_measure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_ingredient_quantity"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:text="@string/ingredient_measure"
+        tools:text="@string/ingredient_measure"/>
+
+    <TextView
+        android:id="@+id/tv_ingredient_measure_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_ingredient_quantity_value"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:layout_toEndOf="@id/tv_ingredient_measure"
+        tools:text="CUP" />
+
+    <TextView
+        android:id="@+id/tv_ingredient_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_ingredient_measure"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:text="@string/ingredient_ingredient"
+        tools:text="@string/ingredient_ingredient"/>
+
+    <TextView
+        android:id="@+id/tv_ingredient_ingredient_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_ingredient_measure_value"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginTop="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:layout_toEndOf="@id/tv_ingredient_ingredient"
+        tools:text="Graham Cracker crumbs" />
+
+</RelativeLayout>

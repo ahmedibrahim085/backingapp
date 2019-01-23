@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
@@ -15,6 +14,7 @@ import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.MainActivity;
 import com.ahmed.bakingapp.ui.UiConstants;
+import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
 
 import java.util.List;
@@ -36,8 +36,9 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 recipeItem = (RecipeItem) Objects.requireNonNull(getIntent().getExtras()).getSerializable(UiConstants.getRecipeItem());
                 recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
                 recipeIngredientsList = recipeItem.getRecipeItemIngredients();
-                initBars();
                 initFragments();
+                initBars();
+
             }
         }else {
             AppToast.showLong(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail");
@@ -51,19 +52,13 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     }
 
     private void initBars(){
-        // Toolbar
-        this.setTitle(recipeItem.getRecipeItemName());
-        // Show the Up button in the action bar.
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+        AppBars.setActionBar(this,recipeItem.getRecipeItemName(), true);
     }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment_master_recipe_details_list, RecipeDetailsFragment.newInstance
-                        (recipeStepsList,recipeIngredientsList ))
+                        (recipeStepsList,recipeIngredientsList, recipeItem.getRecipeItemName() ))
                 .commit();
     }
     @Override

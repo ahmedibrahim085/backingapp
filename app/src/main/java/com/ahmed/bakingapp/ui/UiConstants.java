@@ -6,12 +6,19 @@ public class UiConstants {
 
     // Strings
     final private static String RECIPE_ITEM = "recipeItem";
+    final private static String RECIPE_INGREDIENT = "recipeIngredient";
+    final private static String RECIPE_Name = "recipeName";
+
 
 //    private static List<RecipeSteps> selectedRecipeSteps;
 
     // ======= ======= ======= Strings ======= ======= =======
     public static String getRecipeItem() {
         return RECIPE_ITEM;
+    }
+
+    public static String getRecipeIngredient() {
+        return RECIPE_INGREDIENT;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======
@@ -24,7 +31,11 @@ public class UiConstants {
         UiConstants.twoPan = twoPan;
     }
 
-//    public static List<RecipeSteps> getSelectedRecipeSteps() {
+    public static String getRecipeName() {
+        return RECIPE_Name;
+    }
+
+    //    public static List<RecipeSteps> getSelectedRecipeSteps() {
 //        return selectedRecipeSteps;
 //    }
 //

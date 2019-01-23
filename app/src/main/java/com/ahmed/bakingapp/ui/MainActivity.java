@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +14,7 @@ import com.ahmed.bakingapp.network.Generator;
 import com.ahmed.bakingapp.network.RecipeClient;
 import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsActivity;
 import com.ahmed.bakingapp.ui.recipes.RecipesAdapter;
+import com.ahmed.bakingapp.utils.AppBars;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,10 +75,14 @@ public class MainActivity extends AppCompatActivity {
         setupToolbar();
         initRecyclerView();
     }
+
+
     private void setupToolbar(){
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        AppBars.setToolBar(this, this.getResources().getString(R.string.main_title));
+
+/*        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.main_title);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);*/
     }
 
     private void initRecyclerView(){

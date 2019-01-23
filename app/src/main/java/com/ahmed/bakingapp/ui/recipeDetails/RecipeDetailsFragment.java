@@ -1,21 +1,25 @@
 package com.ahmed.bakingapp.ui.recipeDetails;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeSteps;
+import com.ahmed.bakingapp.ui.UiConstants;
+import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.utils.AppToast;
+import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,27 +31,24 @@ public class RecipeDetailsFragment extends Fragment {
     List<RecipeIngredients>recipeIngredientsList;
     RecipeDetailsAdapter recipeDetailsAdapter;
     private RecyclerView recyclerView;
-    private View rootView;
     private TextView tv_recipe_ingredients;
+
+    private String recipeName;
 
 
     public static RecipeDetailsFragment newInstance(List<RecipeSteps> recipeSteps,
-                                                    List<RecipeIngredients> recipeIngredients) {
+                                                    List<RecipeIngredients> recipeIngredients, String recipeItemName) {
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable("recipeSteps", (Serializable) recipeSteps);
         args.putSerializable("recipeIngredients", (Serializable) recipeIngredients);
+        args.putString(UiConstants.getRecipeName(), recipeItemName);
+
         fragment.setArguments(args);
         return fragment;
     }
 
-    public View getRootView() {
-        return rootView;
-    }
 
-    public void setRootView(View rootView) {
-        this.rootView = rootView;
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,41 +56,29 @@ public class RecipeDetailsFragment extends Fragment {
         if (getArguments() != null) {
             recipeStepsList = (List<RecipeSteps>) getArguments().getSerializable("recipeSteps");
             recipeIngredientsList = (List<RecipeIngredients>) getArguments().getSerializable("recipeIngredients");
+            recipeName = getArguments().getString(UiConstants.getRecipeName());
         }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_recipedetails_master_list,
+        return inflater.inflate(R.layout.fragment_recipedetails_master_list,
                 container, false);
-        setRootView(view);
-        initiateRecipeIngredient();
-        initRecipeDetailsListRecyclerView();
-        return view;
     }
 
-    private void initiateRecipeIngredient(){
-        tv_recipe_ingredients = getRootView().findViewById(R.id.tv_recipe_ingredients);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        tv_recipe_ingredients = view.findViewById(R.id.tv_recipe_ingredients);
         tv_recipe_ingredients.setText("Ingredients");
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showRecipeIngredientDetails(recipeIngredientsList);
-                Toast.makeText(getContext(), "Recipe Ingredient clicked :",
-                        Toast.LENGTH_LONG).show();
             }
         });
-    }
-
-    private void showRecipeIngredientDetails(List<RecipeIngredients> recipeIngredients) {
-        Log.e(TAG,"recipeIngredients : "+recipeIngredients );
-    }
-
-    private void initRecipeDetailsListRecyclerView() {
-        recyclerView = getRootView().findViewById(R.id.list_recipe_details_steps);
-        assert recyclerView != null;
-        // Add layout manager to manage layout
+        recyclerView = view.findViewById(R.id.list_recipe_details_steps);
         // Add adapter to handle data from data source to view
         recipeDetailsAdapter = new RecipeDetailsAdapter(recipeStepsList);
         // to Open the Recipe Details when click on the item in the recycle view
@@ -104,6 +93,17 @@ public class RecipeDetailsFragment extends Fragment {
             }
         });
         recyclerView.setAdapter(recipeDetailsAdapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));    }
+
+
+    private void showRecipeIngredientDetails(List<RecipeIngredients> recipeIngredients) {
+        Log.e(TAG,"recipeIngredients : "+recipeIngredients );
+//        if (!UiConstants.isTwoPan()) {
+            Intent intent = new Intent(getActivity(), IngredientActivity.class);
+            intent.putExtra(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
+            intent.putExtra(UiConstants.getRecipeName(), recipeName);
+            startActivity(intent);
+//        }
     }
 
     private void showRecipeStepDetails(RecipeSteps recipeStep) {
