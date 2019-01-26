@@ -21,18 +21,19 @@
 
     <!--Linear Layout to host & Arrange All the Recipe Steps Description Vertically-->
     <LinearLayout
-        android:id="@+id/android_me_linear_layout"
+        android:id="@+id/recipe_details__container_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical">
 
         <!-- This container holds the head HeadBodyPartFragment of the custom Android-Me image -->
-        <FrameLayout
-            android:id="@+id/recipe_details"
+        <include layout="@layout/activity_ingredient" />
+<!--        <FrameLayout
+            android:id="@+id/FrameLayout_recipe_details_Ingredients"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside" />-->
     </LinearLayout>
 
 </LinearLayout>

@@ -19,7 +19,6 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_recipe_details_steps"
-        android:layout_below="@+id/tv_recipe_ingredients"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"

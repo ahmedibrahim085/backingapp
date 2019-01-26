@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
+import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
 import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
@@ -27,6 +29,8 @@ import java.util.List;
 public class RecipeDetailsFragment extends Fragment {
 
     private static final String TAG = RecipeDetailsFragment.class.getSimpleName();
+    FragmentManager fragmentManagerIngredients;
+
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients>recipeIngredientsList;
     RecipeDetailsAdapter recipeDetailsAdapter;
@@ -75,7 +79,11 @@ public class RecipeDetailsFragment extends Fragment {
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showRecipeIngredientDetails(recipeIngredientsList);
+                if (!UiConstants.isTwoPan()) {
+                    showRecipeIngredientDetailsActivity(recipeIngredientsList);
+                }else {
+                    showRecipeIngredientDetailsFragment(recipeIngredientsList);
+                }
             }
         });
         recyclerView = view.findViewById(R.id.list_recipe_details_steps);
@@ -88,26 +96,39 @@ public class RecipeDetailsFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
                 int position = viewHolder.getAdapterPosition();
                 RecipeSteps recipeStep = recipeDetailsAdapter.getRecipeStepDetailsItems(position);
-                AppToast.showLong(getContext(), "you selected Recipe Detail position :"+position);
                 showRecipeStepDetails(recipeStep);
             }
         });
         recyclerView.setAdapter(recipeDetailsAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));    }
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+
+        if (UiConstants.isTwoPan()) {
+            showRecipeIngredientDetailsFragment(recipeIngredientsList);
+        }
+    }
 
 
-    private void showRecipeIngredientDetails(List<RecipeIngredients> recipeIngredients) {
+    private void showRecipeIngredientDetailsActivity(List<RecipeIngredients> recipeIngredients) {
         Log.e(TAG,"recipeIngredients : "+recipeIngredients );
-//        if (!UiConstants.isTwoPan()) {
             Intent intent = new Intent(getActivity(), IngredientActivity.class);
             intent.putExtra(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
             intent.putExtra(UiConstants.getRecipeName(), recipeName);
             startActivity(intent);
-//        }
     }
 
     private void showRecipeStepDetails(RecipeSteps recipeStep) {
         Log.e(TAG,"recipeStep : "+recipeStep );
+        AppToast.showShort(getActivity(), recipeStep.getStepsShortDescription());
+
+    }
+
+    private void showRecipeIngredientDetailsFragment(List<RecipeIngredients> recipeIngredients){
+        AppToast.showShort(getActivity(), recipeName + " Ingredients");
+        fragmentManagerIngredients = getActivity().getSupportFragmentManager();
+        fragmentManagerIngredients.beginTransaction()
+                .add(R.id.frameLayout_ingredients, IngredientsFragment.newInstance
+                        (recipeIngredients))
+                .commit();
     }
 
 

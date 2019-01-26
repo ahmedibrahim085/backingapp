@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.ingredients.IngredientActivity"></activity>
+        <activity android:name=".ui.steps.StepsActivity"></activity>
+        <activity android:name=".ui.ingredients.IngredientActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name"

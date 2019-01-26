@@ -22,7 +22,6 @@ public class IngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
-
         if (getIntent()!=null) {
             if (getIntent().hasExtra(UiConstants.getRecipeIngredient())) {
                 recipeIngredients =

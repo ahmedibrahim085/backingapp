@@ -10,6 +10,6 @@ public class AppToast {
     }
 
     public static void showShort(Context context, String MessageToShow){
-        Toast.makeText(context, MessageToShow, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, MessageToShow, Toast.LENGTH_SHORT).show();
     }
 }
