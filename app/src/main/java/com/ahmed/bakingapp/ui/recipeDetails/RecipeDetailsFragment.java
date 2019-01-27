@@ -76,6 +76,7 @@ public class RecipeDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tv_recipe_ingredients = view.findViewById(R.id.tv_recipe_ingredients);
         tv_recipe_ingredients.setText("Ingredients");
+        Log.e(TAG, "UiConstants.isTwoPan() - value is: "+UiConstants.isTwoPan());
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +107,6 @@ public class RecipeDetailsFragment extends Fragment {
             showRecipeIngredientDetailsFragment(recipeIngredientsList);
         }
     }
-
 
     private void showRecipeIngredientDetailsActivity(List<RecipeIngredients> recipeIngredients) {
         Log.e(TAG,"recipeIngredients : "+recipeIngredients );

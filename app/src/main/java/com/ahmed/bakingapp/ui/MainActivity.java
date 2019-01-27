@@ -46,15 +46,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_recipes_list);
-        if (findViewById(R.id.list_recipe) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
-            UiConstants.setTwoPan(true);
-        }else {
-            UiConstants.setTwoPan(false);
-        }
+        // Twopane value is returned programmatically from Android Configuration - See AppClass
         Log.d(TAG, "twoPane - MainActivity - onCreate - is:"+UiConstants.isTwoPan());
         initUI();
         getRecipes();
@@ -72,17 +64,8 @@ public class MainActivity extends AppCompatActivity {
     // ======= ======= ======= User Interface  ======= START ======= =======
 
     private void initUI(){
-        setupToolbar();
+        AppBars.setAppBars(this,this.getResources().getString(R.string.main_title) , false);
         initRecyclerView();
-    }
-
-
-    private void setupToolbar(){
-        AppBars.setToolBar(this, this.getResources().getString(R.string.main_title));
-
-/*        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.main_title);
-        setSupportActionBar(toolbar);*/
     }
 
     private void initRecyclerView(){

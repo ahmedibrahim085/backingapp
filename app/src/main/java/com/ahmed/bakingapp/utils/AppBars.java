@@ -11,17 +11,22 @@ public class AppBars {
 
     private static final String TAG = AppBars.class.getSimpleName();
 
+    public static void setAppBars(AppCompatActivity activity, String toolBarTitle,
+                                  Boolean actionBarEnabled){
+        setActionBar(activity,toolBarTitle,actionBarEnabled);
+        setToolBar(activity, toolBarTitle);
+    }
     public static void setActionBar(AppCompatActivity activity, String toolBarTitle,
                                      Boolean actionBarEnabled){
         // Show the Up button in the action bar.
         ActionBar actionBar = activity.getSupportActionBar();
-        actionBar.setTitle(toolBarTitle);
         if (actionBar != null) {
+            actionBar.setTitle(toolBarTitle);
             actionBar.setDisplayHomeAsUpEnabled(actionBarEnabled);
         }
     }
 
-    public static void setToolBar(AppCompatActivity activity, String toolBarTitle){
+    private static void setToolBar(AppCompatActivity activity, String toolBarTitle){
         Log.e(TAG, "toolBarTitle is : "+toolBarTitle);
         Toolbar toolbar = activity.findViewById(R.id.toolbar);
         if (toolbar!=null) {

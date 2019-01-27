@@ -21,7 +21,7 @@
 
     <!--Linear Layout to host & Arrange All the Recipe Steps Description Vertically-->
     <LinearLayout
-        android:id="@+id/recipe_details__container_linear_layout"
+        android:id="@+id/recipe_details_container_linear_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"

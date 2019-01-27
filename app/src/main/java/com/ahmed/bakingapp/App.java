@@ -2,6 +2,9 @@ package com.ahmed.bakingapp;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
+
+import com.ahmed.bakingapp.ui.UiConstants;
 
 public  class App extends Application {
 
@@ -10,6 +13,8 @@ public  class App extends Application {
 //    private static AppDatabase appDatabase;
 
     private static boolean debuggable;
+    private static final String TAG = App.class.getSimpleName();
+
 
     @Override
     public void onCreate() {
@@ -23,7 +28,7 @@ public  class App extends Application {
         }else {
             setDebuggable(false);
         }
-
+        UiConstants.setTwoPan(isW900DpSupported());
     }
 
     private void initiateAppSharedPrefs(Context context){
@@ -63,4 +68,11 @@ public  class App extends Application {
     public static void setDebuggable(boolean debuggable) {
         App.debuggable = debuggable;
     }
+
+    public static boolean isW900DpSupported() {
+        Configuration configuration = getAppContext().getResources().getConfiguration();
+//        Log.e(TAG, "configuration.smallestScreenWidthDp: " + configuration.smallestScreenWidthDp);
+        return configuration.smallestScreenWidthDp >= 900;
+    }
+
 }

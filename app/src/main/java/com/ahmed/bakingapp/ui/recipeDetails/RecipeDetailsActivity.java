@@ -26,6 +26,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     RecipeItem recipeItem;
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients> recipeIngredientsList;
+    private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,8 +38,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
                 recipeIngredientsList = recipeItem.getRecipeItemIngredients();
                 initFragments();
-                initBars();
-
+                AppBars.setAppBars(this,recipeItem.getRecipeItemName() , true);
             }
         }else {
             AppToast.showLong(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail");
@@ -46,14 +46,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    private void initBars(){
-        AppBars.setActionBar(this,recipeItem.getRecipeItemName(), true);
-    }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()

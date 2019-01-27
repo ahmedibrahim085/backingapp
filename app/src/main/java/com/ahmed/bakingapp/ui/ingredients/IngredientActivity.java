@@ -17,7 +17,8 @@ import java.util.Objects;
 public class IngredientActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     List<RecipeIngredients> recipeIngredients;
-    String recipeName;
+    String recipeName = App.getAppContext().getResources().getString(R.string.app_name);
+    String ingredientsTitle = " - ingredients";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,15 +32,11 @@ public class IngredientActivity extends AppCompatActivity {
                 recipeName = getIntent().getExtras().getString(UiConstants.getRecipeName());
                 initFragments();
             }
+            AppBars.setAppBars(this,recipeName+ingredientsTitle , true);
         }else {
             AppToast.showLong(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail");
             finish();
         }
-    }
-
-    private void initBars(){
-        AppBars.setToolBar(this, recipeName);
-        AppBars.setActionBar(this, recipeName,true);
     }
 
     private void initFragments(){
