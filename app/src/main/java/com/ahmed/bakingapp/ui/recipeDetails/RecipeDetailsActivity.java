@@ -26,6 +26,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     RecipeItem recipeItem;
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients> recipeIngredientsList;
+    private String recipeName;
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
 
     @Override
@@ -34,11 +35,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_details);
         if (getIntent()!=null) {
             if (getIntent().hasExtra(UiConstants.getRecipeItem())) {
-                recipeItem = (RecipeItem) Objects.requireNonNull(getIntent().getExtras()).getSerializable(UiConstants.getRecipeItem());
-                recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
-                recipeIngredientsList = recipeItem.getRecipeItemIngredients();
+                setRecipeDetailsInfo((RecipeItem)
+                        Objects.requireNonNull(getIntent().getExtras())
+                                .getSerializable(UiConstants.getRecipeItem()));
+                AppBars.setAppBars(this,recipeName , true);
                 initFragments();
-                AppBars.setAppBars(this,recipeItem.getRecipeItemName() , true);
             }
         }else {
             AppToast.showLong(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail");
@@ -46,11 +47,32 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(UiConstants.getRecipeItem(), recipeItem);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        setRecipeDetailsInfo((RecipeItem)
+                Objects.requireNonNull(savedInstanceState
+                        .getSerializable(UiConstants.getRecipeItem())));
+        initFragments();
+    }
+
+    private void setRecipeDetailsInfo(RecipeItem recipeItemDetailedInfo){
+        recipeItem = recipeItemDetailedInfo;
+        recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
+        recipeIngredientsList = recipeItem.getRecipeItemIngredients();
+        recipeName= recipeItem.getRecipeItemName();
+    }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment_master_recipe_details_list, RecipeDetailsFragment.newInstance
-                        (recipeStepsList,recipeIngredientsList, recipeItem.getRecipeItemName() ))
+                        (recipeStepsList,recipeIngredientsList, recipeName))
                 .commit();
     }
     @Override
@@ -68,5 +90,4 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

@@ -32,7 +32,7 @@ public class RecipeDetailsFragment extends Fragment {
     FragmentManager fragmentManagerIngredients;
 
     List<RecipeSteps> recipeStepsList;
-    List<RecipeIngredients>recipeIngredientsList;
+    List<RecipeIngredients> recipeIngredientsList;
     RecipeDetailsAdapter recipeDetailsAdapter;
     private RecyclerView recyclerView;
     private TextView tv_recipe_ingredients;
@@ -44,8 +44,8 @@ public class RecipeDetailsFragment extends Fragment {
                                                     List<RecipeIngredients> recipeIngredients, String recipeItemName) {
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable("recipeSteps", (Serializable) recipeSteps);
-        args.putSerializable("recipeIngredients", (Serializable) recipeIngredients);
+        args.putSerializable(UiConstants.getRecipeSteps(), (Serializable) recipeSteps);
+        args.putSerializable(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
         args.putString(UiConstants.getRecipeName(), recipeItemName);
 
         fragment.setArguments(args);
@@ -53,15 +53,30 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            recipeStepsList = (List<RecipeSteps>) getArguments().getSerializable("recipeSteps");
-            recipeIngredientsList = (List<RecipeIngredients>) getArguments().getSerializable("recipeIngredients");
-            recipeName = getArguments().getString(UiConstants.getRecipeName());
+        if ( savedInstanceState == null ) {
+            if ( getArguments() != null ) {
+                setRecipeDetailsInfo(getArguments());
+            }
+        } else {
+            setRecipeDetailsInfo(savedInstanceState);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(UiConstants.getRecipeSteps(), (Serializable) recipeStepsList);
+        outState.putSerializable(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredientsList);
+        outState.putString(UiConstants.getRecipeName(), recipeName);
+    }
+
+    private void setRecipeDetailsInfo(@NonNull Bundle bundle) {
+        recipeStepsList = (List<RecipeSteps>) bundle.getSerializable(UiConstants.getRecipeSteps());
+        recipeIngredientsList = (List<RecipeIngredients>) bundle.getSerializable(UiConstants.getRecipeIngredient());
+        recipeName = bundle.getString(UiConstants.getRecipeName());
     }
 
     @Nullable
@@ -76,15 +91,10 @@ public class RecipeDetailsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         tv_recipe_ingredients = view.findViewById(R.id.tv_recipe_ingredients);
         tv_recipe_ingredients.setText("Ingredients");
-        Log.e(TAG, "UiConstants.isTwoPan() - value is: "+UiConstants.isTwoPan());
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!UiConstants.isTwoPan()) {
-                    showRecipeIngredientDetailsActivity(recipeIngredientsList);
-                }else {
-                    showRecipeIngredientDetailsFragment(recipeIngredientsList);
-                }
+                showRecipeIngredientDetails();
             }
         });
         recyclerView = view.findViewById(R.id.list_recipe_details_steps);
@@ -102,27 +112,34 @@ public class RecipeDetailsFragment extends Fragment {
         });
         recyclerView.setAdapter(recipeDetailsAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+        // in TwoPane = true this will cause the Ingredients Fragment to show Automatically
+        // without the user clicking it.
+        if ( UiConstants.isTwoPan() ) {
+            showRecipeIngredientDetails();
+        }
+    }
 
-        if (UiConstants.isTwoPan()) {
+    // ======= ======= ======= Show Recipe Ingredients ======= START ======= =======
+    private void showRecipeIngredientDetails() {
+        Log.e(TAG,
+                "showRecipeIngredientDetails - \n UiConstants.isTwoPan() - value is: " + UiConstants.isTwoPan());
+        if (!UiConstants.isTwoPan() ) {
+            showRecipeIngredientDetailsActivity(recipeIngredientsList);
+        } else {
             showRecipeIngredientDetailsFragment(recipeIngredientsList);
         }
     }
 
     private void showRecipeIngredientDetailsActivity(List<RecipeIngredients> recipeIngredients) {
-        Log.e(TAG,"recipeIngredients : "+recipeIngredients );
-            Intent intent = new Intent(getActivity(), IngredientActivity.class);
-            intent.putExtra(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
-            intent.putExtra(UiConstants.getRecipeName(), recipeName);
-            startActivity(intent);
+        Log.e(TAG,
+                "showRecipeIngredientDetailsActivity - recipeIngredients : " + recipeIngredients);
+        Intent intent = new Intent(getActivity(), IngredientActivity.class);
+        intent.putExtra(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
+        intent.putExtra(UiConstants.getRecipeName(), recipeName);
+        startActivity(intent);
     }
 
-    private void showRecipeStepDetails(RecipeSteps recipeStep) {
-        Log.e(TAG,"recipeStep : "+recipeStep );
-        AppToast.showShort(getActivity(), recipeStep.getStepsShortDescription());
-
-    }
-
-    private void showRecipeIngredientDetailsFragment(List<RecipeIngredients> recipeIngredients){
+    private void showRecipeIngredientDetailsFragment(List<RecipeIngredients> recipeIngredients) {
         AppToast.showShort(getActivity(), recipeName + " Ingredients");
         fragmentManagerIngredients = getActivity().getSupportFragmentManager();
         fragmentManagerIngredients.beginTransaction()
@@ -130,6 +147,26 @@ public class RecipeDetailsFragment extends Fragment {
                         (recipeIngredients))
                 .commit();
     }
+    // ======= ======= ======= Show Recipe Ingredients ======= END/FIN ======= =======
 
+    // ======= ======= ======= Show Recipe Step ======= START ======= =======
+    private void showRecipeStepDetails(RecipeSteps recipeStep) {
+        Log.e(TAG, "recipeStep : " + recipeStep);
+        AppToast.showShort(getActivity(), recipeStep.getStepsShortDescription());
+        if ( !UiConstants.isTwoPan() ) {
+            showRecipeStepActivity(recipeStep);
+        } else {
+            showRecipeStepFragment(recipeStep);
+        }
+    }
 
+    private void showRecipeStepActivity(RecipeSteps recipeStep) {
+
+    }
+
+    private void showRecipeStepFragment(RecipeSteps recipeStep) {
+
+    }
+
+    // ======= ======= ======= Show Recipe Step ======= END/FIN ======= =======
 }

@@ -7,7 +7,9 @@ public class UiConstants {
     // Strings
     final private static String RECIPE_ITEM = "recipeItem";
     final private static String RECIPE_INGREDIENT = "recipeIngredient";
-    final private static String RECIPE_Name = "recipeName";
+    final private static String RECIPE_NAME = "recipeName";
+    final private static String RECIPE_STEPS = "recipeSteps";
+
 
 
 //    private static List<RecipeSteps> selectedRecipeSteps;
@@ -21,6 +23,13 @@ public class UiConstants {
         return RECIPE_INGREDIENT;
     }
 
+    public static String getRecipeName() {
+        return RECIPE_NAME;
+    }
+
+    public static String getRecipeSteps() {
+        return RECIPE_STEPS;
+    }
     // ======= ======= ======= Booleans ======= ======= =======
 
     public static boolean isTwoPan() {
@@ -29,10 +38,6 @@ public class UiConstants {
 
     public static void setTwoPan(boolean twoPan) {
         UiConstants.twoPan = twoPan;
-    }
-
-    public static String getRecipeName() {
-        return RECIPE_Name;
     }
 
     //    public static List<RecipeSteps> getSelectedRecipeSteps() {
