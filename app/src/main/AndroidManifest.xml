@@ -25,13 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.recipeDetails.RecipeDetailsActivity" />
+        <activity android:name=".ui.recipeDetails.OnRecipeDetailsActivity" />
         <activity
             android:name=".ui.steps.StepsActivity"
-            android:parentActivityName=".ui.recipeDetails.RecipeDetailsActivity" />
+            android:parentActivityName=".ui.recipeDetails.OnRecipeDetailsActivity" />
         <activity
             android:name=".ui.ingredients.IngredientActivity"
-            android:parentActivityName=".ui.recipeDetails.RecipeDetailsActivity" />
+            android:parentActivityName=".ui.recipeDetails.OnRecipeDetailsActivity" />
     </application>
 
 </manifest>

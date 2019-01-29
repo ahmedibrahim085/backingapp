@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.ui.UiConstants;
-import com.ahmed.bakingapp.ui.listeners.RecipeNavigationClickListener;
+import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +28,7 @@ public class StepsNavigationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int numberOfRecipeSteps;
 
-    private RecipeNavigationClickListener mListener;
+    private OnRecipeNavigationClickListener mListener;
 
     TextView tv_numberOfSteps;
     ImageView img_previousRecipe;
@@ -100,11 +100,11 @@ public class StepsNavigationFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if ( context instanceof RecipeNavigationClickListener ) {
-            mListener = (RecipeNavigationClickListener) context;
+        if ( context instanceof OnRecipeNavigationClickListener ) {
+            mListener = (OnRecipeNavigationClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement RecipeNavigationClickListener");
+                    + " must implement OnRecipeNavigationClickListener");
         }
     }
 

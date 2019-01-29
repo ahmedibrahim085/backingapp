@@ -21,6 +21,7 @@ import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
 import com.ahmed.bakingapp.ui.steps.StepsActivity;
+import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
 import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
@@ -147,7 +148,7 @@ public class RecipeDetailsFragment extends Fragment {
         AppToast.showShort(getActivity(), recipeName + " Ingredients");
         fragmentManagerIngredients = getActivity().getSupportFragmentManager();
         fragmentManagerIngredients.beginTransaction()
-                .add(R.id.frameLayout_ingredients, IngredientsFragment.newInstance
+                .replace(R.id.frameLayout_ingredients, IngredientsFragment.newInstance
                         (recipeIngredients))
                 .commit();
     }
@@ -175,7 +176,12 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
     private void showRecipeStepFragment(RecipeSteps recipeStep) {
-
+        AppToast.showShort(getActivity(),  "recipeStep id: = "+recipeStep.getStepsId());
+        fragmentManagerIngredients = getActivity().getSupportFragmentManager();
+        fragmentManagerIngredients.beginTransaction()
+                .replace(R.id.frameLayout_ingredients, StepsNavigationFragment.newInstance
+                        (recipeStepsList.size()))
+                .commit();
     }
 
     // =======

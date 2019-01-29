@@ -1,6 +1,6 @@
 package com.ahmed.bakingapp.ui.listeners;
 
-public interface RecipeNavigationClickListener {
+public interface OnRecipeNavigationClickListener {
 
     void onPreviousRecipeSelected(int position);
 

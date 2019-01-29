@@ -9,10 +9,10 @@ import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.UiConstants;
-import com.ahmed.bakingapp.ui.listeners.RecipeNavigationClickListener;
+import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 import com.ahmed.bakingapp.utils.AppToast;
 
-public class StepsActivity extends AppCompatActivity implements RecipeNavigationClickListener {
+public class StepsActivity extends AppCompatActivity implements OnRecipeNavigationClickListener {
 
     private static final String TAG = StepsActivity.class.getSimpleName();
 
@@ -21,7 +21,6 @@ public class StepsActivity extends AppCompatActivity implements RecipeNavigation
     private int numberOfRecipeSteps;
     StepsNavigationFragment stepsNavigationFragment;
     private RecipeSteps recipeStepsInfo;
-    private int numberOfSteps;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class StepsActivity extends AppCompatActivity implements RecipeNavigation
         stepsFragmentManager = getSupportFragmentManager();
         if (getIntent() != null)  {
             recipeStepsInfo = (RecipeSteps) getIntent().getSerializableExtra(UiConstants.getRecipeSteps());
-            numberOfSteps = getIntent().getIntExtra(UiConstants.getRecipeStepsNumber(),0);
+            UiConstants.setNumberOfSteps(getIntent().getIntExtra(UiConstants.getRecipeStepsNumber(),0));
         }else{
             AppToast.showLong(App.getAppContext(),getString(R.string.error_show_steps));
             finish();
@@ -47,7 +46,7 @@ public class StepsActivity extends AppCompatActivity implements RecipeNavigation
         // commit Steps Navigation Fragment
         stepsFragmentManager.beginTransaction()
                 .add(R.id.frameLayout_recipe_steps_navigation,
-                        StepsNavigationFragment.newInstance(numberOfSteps))
+                        StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps()))
                 .commit();
     }
 
@@ -55,7 +54,7 @@ public class StepsActivity extends AppCompatActivity implements RecipeNavigation
         // commit Steps Navigation Fragment
         stepsFragmentManager.beginTransaction()
                 .replace(R.id.frameLayout_recipe_steps_navigation,
-                        StepsNavigationFragment.newInstance(numberOfSteps))
+                        StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps()))
                 .commit();
     }
 

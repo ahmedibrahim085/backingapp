@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        tools:context=".ui.recipeDetails.RecipeDetailsActivity"
+        tools:context=".ui.recipeDetails.OnRecipeDetailsActivity"
         tools:itemCount="3"/>
 
 </LinearLayout>

@@ -1,13 +1,13 @@
 package com.ahmed.bakingapp.ui;
 
-import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsFragment;
-
 public class UiConstants {
     // Booleans
     private static boolean twoPan;
 
     // Integers
     private static int currentStepId;
+    private static int numberOfSteps;
+
 
 
 
@@ -50,6 +50,14 @@ public class UiConstants {
 
     public static void setCurrentStepId(int currentStepId) {
         UiConstants.currentStepId = currentStepId;
+    }
+
+    public static int getNumberOfSteps() {
+        return numberOfSteps;
+    }
+
+    public static void setNumberOfSteps(int numberOfSteps) {
+        UiConstants.numberOfSteps = numberOfSteps;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======
