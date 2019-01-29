@@ -22,8 +22,7 @@ import com.ahmed.bakingapp.ui.listeners.RecipeNavigationClickListener;
 public class StepsNavigationFragment extends Fragment {
     private static final String TAG = StepsNavigationFragment.class.getSimpleName();
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    // the fragment initialization parameters,
     private static final String ARG_NUMBER_OF_STEPS = UiConstants.getRecipeStepsNumber();
 
     // TODO: Rename and change types of parameters

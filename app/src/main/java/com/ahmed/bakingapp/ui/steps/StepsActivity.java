@@ -3,6 +3,7 @@ package com.ahmed.bakingapp.ui.steps;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
@@ -12,6 +13,8 @@ import com.ahmed.bakingapp.ui.listeners.RecipeNavigationClickListener;
 import com.ahmed.bakingapp.utils.AppToast;
 
 public class StepsActivity extends AppCompatActivity implements RecipeNavigationClickListener {
+
+    private static final String TAG = StepsActivity.class.getSimpleName();
 
     FragmentManager stepsFragmentManager;
 
@@ -23,6 +26,7 @@ public class StepsActivity extends AppCompatActivity implements RecipeNavigation
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e(TAG, "StepsActivity - onCreate");
         setContentView(R.layout.activity_steps);
         stepsFragmentManager = getSupportFragmentManager();
         if (getIntent() != null)  {
@@ -58,20 +62,19 @@ public class StepsActivity extends AppCompatActivity implements RecipeNavigation
 
     @Override
     public void onPreviousRecipeSelected(int position) {
-        AppToast.showShort(this, "Previous Recipe Step Instruction");
         if ( UiConstants.getCurrentStepId() <= 1 ) {
-            // DO something to update Recipe Fragment to the previous one
-        }else{
             AppToast.showLong(this,"This is the First Recipe Step");
+        }else{
+            // DO something to update Recipe Fragment to the previous one
         }
     }
 
     @Override
     public void onNextRecipeSelected(int position) {
         if ( UiConstants.getCurrentStepId() >= numberOfRecipeSteps ) {
-            // Do Fragment Update
-        }else{
             AppToast.showLong(this,"This is the last Recipe Step");
+        }else{
+            // Do Fragment Update
         }
     }
 
