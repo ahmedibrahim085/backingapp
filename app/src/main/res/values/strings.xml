@@ -13,5 +13,6 @@
     <string name="recipe_step_counter">Recipe Step %d of %d</string>
     <string name="describe_previous_recipe_navigation_image">navigate to previous recipe</string>
     <string name="describe_next_recipe_navigation_image">navigate to next recipe</string>
+    <string name="tv_ingredients">Ingredients</string>
 
 </resources>

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeSteps;
@@ -95,7 +96,7 @@ public class RecipeDetailsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         tv_recipe_ingredients = view.findViewById(R.id.tv_recipe_ingredients);
-        tv_recipe_ingredients.setText("Ingredients");
+        tv_recipe_ingredients.setText(App.getAppContext().getResources().getString(R.string.tv_ingredients));
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
