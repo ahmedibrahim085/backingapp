@@ -21,7 +21,6 @@ import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
 import com.ahmed.bakingapp.ui.steps.StepsActivity;
-import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
 import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
@@ -40,6 +39,9 @@ public class RecipeDetailsFragment extends Fragment {
     private TextView tv_recipe_ingredients;
 
     private String recipeName;
+    private RecipeSteps recipeStepsInfo;
+
+
 
 
     public static RecipeDetailsFragment newInstance(List<RecipeSteps> recipeSteps,
@@ -155,7 +157,8 @@ public class RecipeDetailsFragment extends Fragment {
     private void showRecipeStepDetails(RecipeSteps recipeStep) {
         Log.e(TAG, "recipeStep : " + recipeStep);
         AppToast.showShort(getActivity(), recipeStep.getStepsShortDescription());
-        StepsNavigationFragment.setCurrentStepId(recipeStep.getStepsId());
+        // the +1 is because list starts counting from 0
+       UiConstants.setCurrentStepId(recipeStep.getStepsId()+1);
         if ( !UiConstants.isTwoPan() ) {
             showRecipeStepActivity(recipeStep);
         } else {
@@ -174,6 +177,9 @@ public class RecipeDetailsFragment extends Fragment {
     private void showRecipeStepFragment(RecipeSteps recipeStep) {
 
     }
+
+    // =======
+
 
     // ======= ======= ======= Show Recipe Step ======= END/FIN ======= =======
 }

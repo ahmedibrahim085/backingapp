@@ -11,4 +11,7 @@
     <string name="error_show_recipe">Something went wrong couldn\'t show Recipe Detail</string>
 
     <string name="recipe_step_counter">Recipe Step %d of %d</string>
+    <string name="describe_previous_recipe_navigation_image">navigate to previous recipe</string>
+    <string name="describe_next_recipe_navigation_image">navigate to next recipe</string>
+
 </resources>

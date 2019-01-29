@@ -1,8 +1,15 @@
 package com.ahmed.bakingapp.ui;
 
+import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsFragment;
+
 public class UiConstants {
     // Booleans
     private static boolean twoPan;
+
+    // Integers
+    private static int currentStepId;
+
+
 
     // Strings
     final private static String RECIPE_ITEM = "recipeItem";
@@ -34,6 +41,15 @@ public class UiConstants {
 
     public static String getRecipeStepsNumber() {
         return RECIPE_STEPS_NUMBER;
+    }
+
+    // ======= ======= ======= Integers ======= ======= =======
+    public static int getCurrentStepId() {
+        return UiConstants.currentStepId;
+    }
+
+    public static void setCurrentStepId(int currentStepId) {
+        UiConstants.currentStepId = currentStepId;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======
