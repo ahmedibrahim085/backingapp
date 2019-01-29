@@ -82,7 +82,7 @@ public class RecipeSteps implements Serializable {
                 comma+STEPS_SHORT_DESCRIPTION+equal+stepsShortDescription+backSlash+
                 comma+STEPS_DESCRIPTION+equal+stepsDescription+backSlash+
                 comma+STEPS_VIDEO_URL+equal+stepsVideoURL+backSlash+
-                comma+STEPS_VIDEO_URL+equal+stepsThumbnailURL+backSlash+
+                comma+STEPS_THUMBNAIL_URL+equal+stepsThumbnailURL+backSlash+
                 '}';
     }
 }

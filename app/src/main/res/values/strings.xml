@@ -6,6 +6,9 @@
     <string name="ingredient_measure">Measure: </string>
     <string name="ingredient_ingredient">Ingredient: </string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_show_steps">Something went wrong Couldn\'t show Steps</string>
+    <string name="error_show_recipe">Something went wrong couldn\'t show Recipe Detail</string>
+
+    <string name="recipe_step_counter">Recipe Step %d of %d</string>
 </resources>

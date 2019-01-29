@@ -42,7 +42,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
                 initFragments();
             }
         }else {
-            AppToast.showLong(App.getAppContext(),"Something went wrong\ncouldn't show Recipe Detail");
+            AppToast.showLong(App.getAppContext(),getString(R.string.error_show_recipe));
             finish();
         }
     }

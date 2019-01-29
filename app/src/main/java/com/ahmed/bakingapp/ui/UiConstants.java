@@ -9,6 +9,7 @@ public class UiConstants {
     final private static String RECIPE_INGREDIENT = "recipeIngredient";
     final private static String RECIPE_NAME = "recipeName";
     final private static String RECIPE_STEPS = "recipeSteps";
+    final private static String RECIPE_STEPS_NUMBER = "recipeStepsNumber";
 
 
 
@@ -30,6 +31,11 @@ public class UiConstants {
     public static String getRecipeSteps() {
         return RECIPE_STEPS;
     }
+
+    public static String getRecipeStepsNumber() {
+        return RECIPE_STEPS_NUMBER;
+    }
+
     // ======= ======= ======= Booleans ======= ======= =======
 
     public static boolean isTwoPan() {

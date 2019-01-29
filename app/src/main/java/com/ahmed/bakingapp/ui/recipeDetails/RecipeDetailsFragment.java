@@ -20,6 +20,8 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
+import com.ahmed.bakingapp.ui.steps.StepsActivity;
+import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
 import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
@@ -153,6 +155,7 @@ public class RecipeDetailsFragment extends Fragment {
     private void showRecipeStepDetails(RecipeSteps recipeStep) {
         Log.e(TAG, "recipeStep : " + recipeStep);
         AppToast.showShort(getActivity(), recipeStep.getStepsShortDescription());
+        StepsNavigationFragment.setCurrentStepId(recipeStep.getStepsId());
         if ( !UiConstants.isTwoPan() ) {
             showRecipeStepActivity(recipeStep);
         } else {
@@ -161,7 +164,11 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
     private void showRecipeStepActivity(RecipeSteps recipeStep) {
-
+        Intent intent = new Intent(getActivity(), StepsActivity.class);
+        intent.putExtra(UiConstants.getRecipeSteps(), recipeStep);
+        intent.putExtra(UiConstants.getRecipeStepsNumber(), recipeStepsList.size());
+        intent.putExtra(UiConstants.getRecipeName(), recipeName);
+        startActivity(intent);
     }
 
     private void showRecipeStepFragment(RecipeSteps recipeStep) {
