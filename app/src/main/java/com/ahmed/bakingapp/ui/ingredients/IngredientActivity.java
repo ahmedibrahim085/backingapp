@@ -11,7 +11,7 @@ import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.ui.UiConstants;
-import com.ahmed.bakingapp.ui.recipeDetails.OnRecipeDetailsActivity;
+import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsActivity;
 import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
 
@@ -66,7 +66,7 @@ public class IngredientActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
-            navigateUpTo(new Intent(this, OnRecipeDetailsActivity.class));
+            navigateUpTo(new Intent(this, RecipeDetailsActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

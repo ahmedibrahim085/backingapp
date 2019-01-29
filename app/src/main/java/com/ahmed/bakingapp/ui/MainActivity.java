@@ -12,7 +12,7 @@ import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.network.Generator;
 import com.ahmed.bakingapp.network.RecipeClient;
-import com.ahmed.bakingapp.ui.recipeDetails.OnRecipeDetailsActivity;
+import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsActivity;
 import com.ahmed.bakingapp.ui.recipes.RecipesAdapter;
 import com.ahmed.bakingapp.utils.AppBars;
 
@@ -27,7 +27,7 @@ import retrofit2.Response;
  * An activity representing a list of Items. This activity
  * has different presentations for handset and tablet-size devices. On
  * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link OnRecipeDetailsActivity} representing
+ * lead to a {@link RecipeDetailsActivity} representing
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
     // ======= ======= ======= Open recipeDetails Activity  ======= START ======= =======
     private void showRecipeDetails(RecipeItem recipeItem){
         Log.d(TAG, "recipeItem clicked is  : "+ recipeItem.getRecipeItemName());
-        Intent intent = new Intent(this, OnRecipeDetailsActivity.class);
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
         intent.putExtra(UiConstants.getRecipeItem(), recipeItem);
         startActivity(intent);
     }

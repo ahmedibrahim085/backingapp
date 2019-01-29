@@ -21,14 +21,14 @@ import com.ahmed.bakingapp.utils.AppToast;
 import java.util.List;
 import java.util.Objects;
 
-public class OnRecipeDetailsActivity extends AppCompatActivity implements OnRecipeNavigationClickListener {
+public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipeNavigationClickListener {
 
     FragmentManager fragmentManager;
     RecipeItem recipeItem;
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients> recipeIngredientsList;
     private String recipeName;
-    private static final String TAG = OnRecipeDetailsActivity.class.getSimpleName();
+    private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
