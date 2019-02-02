@@ -108,7 +108,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         }else{
             // DO something to update Recipe Fragment to the previous one
             recipeDetailsFragment.goToPreviousFragments(recipeStepsList.get(position));
-
         }
     }
 
@@ -121,7 +120,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
             // Do Fragment Update
 //            UiConstants.setCurrentStepId(UiConstants.getCurrentStepId()+1);
             recipeDetailsFragment.goToNextFragments(recipeStepsList.get(position));
-
         }
     }
 }

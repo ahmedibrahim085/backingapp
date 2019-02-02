@@ -8,10 +8,7 @@ public class UiConstants {
     private static int currentStepId;
     private static int numberOfSteps;
 
-
-
-
-    // Strings
+    // Strings - Constants
     final private static String RECIPE_ITEM = "recipeItem";
     final private static String RECIPE_INGREDIENT = "recipeIngredient";
     final private static String RECIPE_NAME = "recipeName";
@@ -19,8 +16,8 @@ public class UiConstants {
     final private static String RECIPE_STEPS_NUMBER = "recipeStepsNumber";
     final private static String ONE_RECIPE_STEP_INSTRUCTION = "recipeStepInstruction";
 
-
-
+    // Strings - Variable
+    private static  String recipeSingleStepDescription;
 
 //    private static List<RecipeSteps> selectedRecipeSteps;
 
@@ -45,6 +42,18 @@ public class UiConstants {
         return RECIPE_STEPS_NUMBER;
     }
 
+    public static String getOneRecipeStepInstruction() {
+        return ONE_RECIPE_STEP_INSTRUCTION;
+    }
+
+    public static String getRecipeSingleStepDescription() {
+        return recipeSingleStepDescription;
+    }
+
+    public static void setRecipeSingleStepDescription(String recipeSingleStepDescription) {
+        UiConstants.recipeSingleStepDescription = recipeSingleStepDescription;
+    }
+
     // ======= ======= ======= Integers ======= ======= =======
     public static int getCurrentStepId() {
         return UiConstants.currentStepId;
@@ -60,10 +69,6 @@ public class UiConstants {
 
     public static void setNumberOfSteps(int numberOfSteps) {
         UiConstants.numberOfSteps = numberOfSteps;
-    }
-
-    public static String getOneRecipeStepInstruction() {
-        return ONE_RECIPE_STEP_INSTRUCTION;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======

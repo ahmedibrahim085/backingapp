@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
+import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,8 +30,9 @@ public class StepsNavigationFragment extends Fragment {
     private int numberOfRecipeSteps;
 
     private OnRecipeNavigationClickListener onRecipeNavigationClickListener;
-
+    RecipeDetailsFragment recipeDetailsFragment;
     TextView tv_numberOfSteps;
+    TextView tv_oneRecipeStepInstruction;
     ImageView img_previousRecipe;
     ImageView img_nextRecipe;
 
@@ -60,6 +62,7 @@ public class StepsNavigationFragment extends Fragment {
         if ( getArguments() != null ) {
             numberOfRecipeSteps = getArguments().getInt(ARG_NUMBER_OF_STEPS);
         }
+        recipeDetailsFragment = new RecipeDetailsFragment();
     }
 
     @Override
@@ -83,6 +86,8 @@ public class StepsNavigationFragment extends Fragment {
                 }
             }
         });
+        tv_oneRecipeStepInstruction = stepsNavigationView.findViewById(R.id.tv_oneRecipeStepInstruction);
+
         //  =======  ======= Recipe Step Instruction Navigation Counter =======  =======
         tv_numberOfSteps = (TextView) stepsNavigationView.findViewById(R.id.tv_numberOfSteps);
         // =======  ======= Next Recipe Step Instruction =======  =======
@@ -125,10 +130,18 @@ public class StepsNavigationFragment extends Fragment {
         if ( UiConstants.getCurrentStepId() == 0 ){
             img_previousRecipe.setVisibility(View.GONE);
             tv_numberOfSteps.setText(getActivity().getResources().getString(R.string.navigation_goto_instructions));
+            if (tv_oneRecipeStepInstruction.getVisibility() == View.VISIBLE ){
+                tv_oneRecipeStepInstruction.setVisibility(View.GONE);
+            }
         }else if (UiConstants.getCurrentStepId()== numberOfRecipeSteps){
             img_nextRecipe.setVisibility(View.GONE);
             img_previousRecipe.setVisibility(View.VISIBLE);
             tv_numberOfSteps.setText(getActivity().getResources().getString(R.string.navigation_back_instructions));
+            if (tv_oneRecipeStepInstruction.getVisibility() == View.GONE ){
+                tv_oneRecipeStepInstruction.setVisibility(View.VISIBLE);
+            }
+            tv_oneRecipeStepInstruction.setText(UiConstants.getRecipeSingleStepDescription());
+
         } else{
             if (img_nextRecipe.getVisibility() == View.GONE ){
                 img_nextRecipe.setVisibility(View.VISIBLE);
@@ -140,6 +153,10 @@ public class StepsNavigationFragment extends Fragment {
                     String.format(getActivity().getResources().getString(R.string.recipe_step_counter),
                             UiConstants.getCurrentStepId(), numberOfRecipeSteps);
             tv_numberOfSteps.setText(stepCounter);
+            if (tv_oneRecipeStepInstruction.getVisibility() == View.GONE ) {
+                tv_oneRecipeStepInstruction.setVisibility(View.VISIBLE);
+            }
+            tv_oneRecipeStepInstruction.setText(UiConstants.getRecipeSingleStepDescription());
         }
     }
 

@@ -4,13 +4,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_centerHorizontal="true"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.steps.StepsNavigationFragment">
+
+    <TextView
+        android:id="@+id/tv_oneRecipeStepInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="This is a long Recipe instruction for one single step" />
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
     <ImageView
         android:id="@+id/img_previous_recipe"
@@ -48,4 +69,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_numberOfSteps"
         app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
 </LinearLayout>
