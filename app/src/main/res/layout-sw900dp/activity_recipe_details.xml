@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout_recipe_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/fragment_master_recipe_details_list"
         android:layout_width="400dp"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <!-- Divider -->
     <View
@@ -20,20 +20,23 @@
         android:background="@android:color/darker_gray" />
 
     <!--Linear Layout to host & Arrange All the Recipe Steps Description Vertically-->
-    <LinearLayout
-        android:id="@+id/recipe_details_container_linear_layout"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- This container holds the head HeadBodyPartFragment of the custom Android-Me image -->
-        <include layout="@layout/activity_ingredient" />
-<!--        <FrameLayout
-            android:id="@+id/FrameLayout_recipe_details_Ingredients"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerInside" />-->
-    </LinearLayout>
+            android:orientation="vertical">
 
+            <FrameLayout
+                android:id="@+id/frameLayout_ingredients"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <include layout="@layout/constraintlayout_recipe_steps_instructions" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>
+

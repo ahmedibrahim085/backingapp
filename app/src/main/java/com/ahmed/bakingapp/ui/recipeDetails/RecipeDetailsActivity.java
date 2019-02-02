@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.ahmed.bakingapp.App;
@@ -15,7 +16,6 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.MainActivity;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
-import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
 
 import java.util.List;
@@ -23,12 +23,18 @@ import java.util.Objects;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipeNavigationClickListener {
 
+    // Fragments
     FragmentManager fragmentManager;
-    RecipeItem recipeItem;
+    RecipeDetailsFragment recipeDetailsFragment;
+    // Lists
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients> recipeIngredientsList;
+    // Objects
+    RecipeItem recipeItem;
+    // Strings
     private String recipeName;
     private static final String TAG = RecipeDetailsActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +45,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
                 setRecipeDetailsInfo((RecipeItem)
                         Objects.requireNonNull(getIntent().getExtras())
                                 .getSerializable(UiConstants.getRecipeItem()));
-                AppBars.setAppBars(this,recipeName , true);
                 initFragments();
             }
         }else {
@@ -68,12 +73,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
         recipeIngredientsList = recipeItem.getRecipeItemIngredients();
         recipeName= recipeItem.getRecipeItemName();
+        UiConstants.setNumberOfSteps(recipeStepsList.size());
+
     }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
+        recipeDetailsFragment = RecipeDetailsFragment.newInstance
+                (recipeStepsList,recipeIngredientsList, recipeName);
         fragmentManager.beginTransaction()
-                .add(R.id.fragment_master_recipe_details_list, RecipeDetailsFragment.newInstance
-                        (recipeStepsList,recipeIngredientsList, recipeName))
+                .add(R.id.fragment_master_recipe_details_list, recipeDetailsFragment)
                 .commit();
     }
     @Override
@@ -94,19 +102,26 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
 
     @Override
     public void onPreviousRecipeSelected(int position) {
-        if ( UiConstants.getCurrentStepId() <= 1 ) {
+        Log.e(TAG, "onPreviousRecipeSelected - position = "+position);
+        if ( position <= 0 ) {
             AppToast.showLong(this,"This is the First Recipe Step");
         }else{
             // DO something to update Recipe Fragment to the previous one
+            recipeDetailsFragment.goToPreviousFragments(recipeStepsList.get(position));
+
         }
     }
 
     @Override
     public void onNextRecipeSelected(int position) {
-        if ( UiConstants.getCurrentStepId() >= recipeStepsList.size() ) {
+        Log.e(TAG, "onNextRecipeSelected - position = "+position);
+        if ( position == recipeStepsList.size() ) {
             AppToast.showLong(this,"This is the last Recipe Step");
         }else{
             // Do Fragment Update
+//            UiConstants.setCurrentStepId(UiConstants.getCurrentStepId()+1);
+            recipeDetailsFragment.goToNextFragments(recipeStepsList.get(position));
+
         }
     }
 }

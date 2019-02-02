@@ -35,45 +35,52 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
             AppToast.showLong(App.getAppContext(),getString(R.string.error_show_steps));
             finish();
         }
-
+     ;
         if (savedInstanceState == null) {
-            commitRecipeStepsFragments();
+            commitRecipeNavigationFragments();
         }
     }
 
 
-    private void commitRecipeStepsFragments() {
+    private void commitRecipeNavigationFragments() {
         // commit Steps Navigation Fragment
+        stepsNavigationFragment =
+                StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps());
         stepsFragmentManager.beginTransaction()
                 .add(R.id.frameLayout_recipe_steps_navigation,
-                        StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps()))
-                .commit();
+                        stepsNavigationFragment).commit();
     }
 
-    private void replaceRecipeStepsFragments() {
-        // commit Steps Navigation Fragment
+    private void replaceRecipeNavigationFragments() {
+        stepsNavigationFragment =
+                StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps());
+        // replace Steps Navigation Fragment
         stepsFragmentManager.beginTransaction()
-                .replace(R.id.frameLayout_recipe_steps_navigation,
-                        StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps()))
+                .replace(R.id.frameLayout_recipe_steps_navigation,stepsNavigationFragment)
                 .commit();
     }
 
 
-    @Override
     public void onPreviousRecipeSelected(int position) {
-        if ( UiConstants.getCurrentStepId() <= 1 ) {
+        if ( position < 1 ) {
             AppToast.showLong(this,"This is the First Recipe Step");
         }else{
             // DO something to update Recipe Fragment to the previous one
+//            UiConstants.setCurrentStepId(UiConstants.getCurrentStepId()-1);
+            replaceRecipeNavigationFragments();
+//            recipeDetailsFragment.showRecipeStepDetails(recipeStepsList.get(position));
+
         }
     }
 
     @Override
     public void onNextRecipeSelected(int position) {
-        if ( UiConstants.getCurrentStepId() >= numberOfRecipeSteps ) {
+        if ( position >= UiConstants.getNumberOfSteps() ) {
             AppToast.showLong(this,"This is the last Recipe Step");
         }else{
             // Do Fragment Update
+//            UiConstants.setCurrentStepId(UiConstants.getCurrentStepId()+1);
+            replaceRecipeNavigationFragments();
         }
     }
 

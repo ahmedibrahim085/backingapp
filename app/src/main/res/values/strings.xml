@@ -14,5 +14,8 @@
     <string name="describe_previous_recipe_navigation_image">navigate to previous recipe</string>
     <string name="describe_next_recipe_navigation_image">navigate to next recipe</string>
     <string name="tv_ingredients">Ingredients</string>
+    <string name="navigation_goto_instructions">Go to Steps Instructions</string>
+    <string name="navigation_back_instructions">back to Steps Instructions</string>
+
 
 </resources>

@@ -28,7 +28,7 @@ public class StepsNavigationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private int numberOfRecipeSteps;
 
-    private OnRecipeNavigationClickListener mListener;
+    private OnRecipeNavigationClickListener onRecipeNavigationClickListener;
 
     TextView tv_numberOfSteps;
     ImageView img_previousRecipe;
@@ -74,34 +74,41 @@ public class StepsNavigationFragment extends Fragment {
         img_previousRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    mListener.onPreviousRecipeSelected(UiConstants.getCurrentStepId());
+                UiConstants.setCurrentStepId(UiConstants.getCurrentStepId() - 1);
+                if ( UiConstants.getCurrentStepId() < 0 ) {
+                    UiConstants.setCurrentStepId(0);
+                }else {
+                    onRecipeNavigationClickListener.onPreviousRecipeSelected(UiConstants.getCurrentStepId());
+                    updateNavigationFragmentView();
+                }
             }
         });
         //  =======  ======= Recipe Step Instruction Navigation Counter =======  =======
         tv_numberOfSteps = (TextView) stepsNavigationView.findViewById(R.id.tv_numberOfSteps);
-        String stepCounter =
-                String.format(getActivity().getResources().getString(R.string.recipe_step_counter),
-                UiConstants.getCurrentStepId(), numberOfRecipeSteps);
-        tv_numberOfSteps.setText(stepCounter);
-
         // =======  ======= Next Recipe Step Instruction =======  =======
         img_nextRecipe = stepsNavigationView.findViewById(R.id.img_next_recipe);
         img_nextRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    mListener.onNextRecipeSelected(UiConstants.getCurrentStepId());
+                UiConstants.setCurrentStepId(UiConstants.getCurrentStepId() + 1);
+                if ( UiConstants.getCurrentStepId() > numberOfRecipeSteps ) {
+                    UiConstants.setCurrentStepId(numberOfRecipeSteps);
+                }else {
+                    onRecipeNavigationClickListener.onNextRecipeSelected(UiConstants.getCurrentStepId());
+                    updateNavigationFragmentView();
+                }
             }
         });
+        updateNavigationFragmentView();
         //=======
         return stepsNavigationView;
     }
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if ( context instanceof OnRecipeNavigationClickListener ) {
-            mListener = (OnRecipeNavigationClickListener) context;
+            onRecipeNavigationClickListener = (OnRecipeNavigationClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnRecipeNavigationClickListener");
@@ -111,7 +118,29 @@ public class StepsNavigationFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        onRecipeNavigationClickListener = null;
+    }
+
+     public void updateNavigationFragmentView(){
+        if ( UiConstants.getCurrentStepId() == 0 ){
+            img_previousRecipe.setVisibility(View.GONE);
+            tv_numberOfSteps.setText(getActivity().getResources().getString(R.string.navigation_goto_instructions));
+        }else if (UiConstants.getCurrentStepId()== numberOfRecipeSteps){
+            img_nextRecipe.setVisibility(View.GONE);
+            img_previousRecipe.setVisibility(View.VISIBLE);
+            tv_numberOfSteps.setText(getActivity().getResources().getString(R.string.navigation_back_instructions));
+        } else{
+            if (img_nextRecipe.getVisibility() == View.GONE ){
+                img_nextRecipe.setVisibility(View.VISIBLE);
+            }
+            if (img_previousRecipe.getVisibility() == View.GONE ){
+                img_previousRecipe.setVisibility(View.VISIBLE);
+            }
+            String stepCounter =
+                    String.format(getActivity().getResources().getString(R.string.recipe_step_counter),
+                            UiConstants.getCurrentStepId(), numberOfRecipeSteps);
+            tv_numberOfSteps.setText(stepCounter);
+        }
     }
 
 }
