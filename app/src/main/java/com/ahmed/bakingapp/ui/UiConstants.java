@@ -17,6 +17,8 @@ public class UiConstants {
     final private static String RECIPE_NAME = "recipeName";
     final private static String RECIPE_STEPS = "recipeSteps";
     final private static String RECIPE_STEPS_NUMBER = "recipeStepsNumber";
+    final private static String ONE_RECIPE_STEP_INSTRUCTION = "recipeStepInstruction";
+
 
 
 
@@ -58,6 +60,10 @@ public class UiConstants {
 
     public static void setNumberOfSteps(int numberOfSteps) {
         UiConstants.numberOfSteps = numberOfSteps;
+    }
+
+    public static String getOneRecipeStepInstruction() {
+        return ONE_RECIPE_STEP_INSTRUCTION;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======

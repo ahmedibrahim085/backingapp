@@ -74,7 +74,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         recipeIngredientsList = recipeItem.getRecipeItemIngredients();
         recipeName= recipeItem.getRecipeItemName();
         UiConstants.setNumberOfSteps(recipeStepsList.size());
-
     }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
@@ -100,6 +99,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         return super.onOptionsItemSelected(item);
     }
 
+    // ====== ====== ====== OnRecipeNavigationClickListener Handling====== ====== ======
     @Override
     public void onPreviousRecipeSelected(int position) {
         Log.e(TAG, "onPreviousRecipeSelected - position = "+position);

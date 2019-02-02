@@ -29,6 +29,7 @@ import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeDetailsFragment extends Fragment {
@@ -40,11 +41,12 @@ public class RecipeDetailsFragment extends Fragment {
     // Lists
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients> recipeIngredientsList;
+    List<String> oneRecipeStepInstructions;
     // Objects
     private RecipeSteps recipeStepsInfo;
     // Layouts
     private FrameLayout frameLayoutIngredients;
-    private ConstraintLayout cl_recipeStepsInstructions;
+    private ConstraintLayout constraintLayout_recipeStepDetails;
     // Layouts - Components
     private TextView tv_recipe_ingredients;
     //Strings
@@ -82,12 +84,6 @@ public class RecipeDetailsFragment extends Fragment {
         }
     }
 
-    private void setRecipeDetailsInfo(@NonNull Bundle bundle) {
-        recipeStepsList = (List<RecipeSteps>) bundle.getSerializable(UiConstants.getRecipeSteps());
-        recipeIngredientsList = (List<RecipeIngredients>) bundle.getSerializable(UiConstants.getRecipeIngredient());
-        recipeName = bundle.getString(UiConstants.getRecipeName());
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -107,9 +103,9 @@ public class RecipeDetailsFragment extends Fragment {
                 showRecipeIngredientDetails();
             }
         });
+        setRecyclerView(view);
         initializeLayouts();
         initializeFragments();
-        setRecyclerView(view);
 
         // in TwoPane = true this will cause the Ingredients Fragment to show Automatically
         // without the user clicking it.
@@ -128,21 +124,59 @@ public class RecipeDetailsFragment extends Fragment {
         outState.putSerializable(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredientsList);
         outState.putString(UiConstants.getRecipeName(), recipeName);
     }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if ( savedInstanceState !=null ){
+            setRecipeDetailsInfo(savedInstanceState);
+            initializeLayouts();
+            initializeFragments();
+        }
+    }
+
     // ======= ======= ======= ======= ======= ======= ======= ======= ======= ======= =======
     // ======= ======= ======= Handle User Experience ======= ======= =======
     // ======= ======= ======= ======= ======= ======= ======= ======= ======= ======= =======
 
     // ======= ======= ======= SetUp UI ======= START ======= =======
 
+    private void setRecipeDetailsInfo(@NonNull Bundle bundle) {
+        recipeStepsList = (List<RecipeSteps>) bundle.getSerializable(UiConstants.getRecipeSteps());
+        recipeIngredientsList = (List<RecipeIngredients>) bundle.getSerializable(UiConstants.getRecipeIngredient());
+        recipeName = bundle.getString(UiConstants.getRecipeName());
+        setOneRecipeStepInstructions();
+    }
+    private void setOneRecipeStepInstructions(){
+        if ( oneRecipeStepInstructions == null) {
+            oneRecipeStepInstructions = new ArrayList();
+        }else{
+            oneRecipeStepInstructions.clear();
+        }
+        for (int i = 0; i< this.recipeStepsList.size(); i++){
+            oneRecipeStepInstructions.add(this.recipeStepsList.get(i).getStepsDescription());
+        }
+    }
+
     private void initializeLayouts() {
-        frameLayoutIngredients = (FrameLayout) getActivity().findViewById(R.id.frameLayout_ingredients);
-        cl_recipeStepsInstructions =
-                (ConstraintLayout)getActivity().findViewById(R.id.constraintLayout_steps);
+        if ( frameLayoutIngredients == null ) {
+            frameLayoutIngredients = (FrameLayout) getActivity().findViewById(R.id.frameLayout_ingredients);
+        }
+        if ( constraintLayout_recipeStepDetails == null ){
+            constraintLayout_recipeStepDetails =
+                    (ConstraintLayout)getActivity().findViewById(R.id.constraintLayout_steps);
+        }
     }
     private void initializeFragments() {
-        fragmentManagerRecipeDetails = getActivity().getSupportFragmentManager();
-        ingredientsFragment = IngredientsFragment.newInstance(recipeIngredientsList);
-        stepsNavigationFragment = StepsNavigationFragment.newInstance(recipeStepsList.size());
+        if ( fragmentManagerRecipeDetails == null ) {
+            fragmentManagerRecipeDetails = getActivity().getSupportFragmentManager();
+        }
+        if ( ingredientsFragment == null ) {
+            ingredientsFragment = IngredientsFragment.newInstance(recipeIngredientsList);
+        }
+        if ( stepsNavigationFragment == null ) {
+            stepsNavigationFragment = StepsNavigationFragment.newInstance(recipeStepsList.size());
+        }
     }
 
     private void setRecyclerView(View view) {
@@ -156,7 +190,7 @@ public class RecipeDetailsFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
                 int position = viewHolder.getAdapterPosition();
                 recipeStepsInfo = recipeDetailsAdapter.getRecipeStepDetailsItems(position);
-//                showRecipeStepDetails(recipeStepsInfo);
+                showRecipeStepDetails(recipeStepsInfo);
             }
         });
         recyclerView.setAdapter(recipeDetailsAdapter);
@@ -172,8 +206,6 @@ public class RecipeDetailsFragment extends Fragment {
     void showRecipeStepDetails(RecipeSteps recipeStep) {
         Log.e(TAG, "recipeStep : " + recipeStep);
         AppToast.showShort(getActivity(), recipeStep.getStepsShortDescription());
-        // the +1 is because list starts counting from 0
-//        UiConstants.setCurrentStepId(recipeStep.getStepsId() + 1);
 
         if ( !UiConstants.isTwoPan() ) {
             showRecipeStepActivity(recipeStep);
@@ -195,8 +227,9 @@ public class RecipeDetailsFragment extends Fragment {
         if ( fragmentManagerRecipeDetails == null ) {
             fragmentManagerRecipeDetails = getActivity().getSupportFragmentManager();
         }
+        // todo should be replaced by the correct Recycle steps Fragment
         fragmentManagerRecipeDetails.beginTransaction()
-                .replace(R.id.frameLayout_ingredients, StepsNavigationFragment.newInstance
+                .replace(R.id.frameLayout_recipe_steps_instruction, StepsNavigationFragment.newInstance
                         (recipeStepsList.size()))
                 .commit();
     }
@@ -207,12 +240,13 @@ public class RecipeDetailsFragment extends Fragment {
 
     // =======  ======= ======= ======= Fragments Controllers ======= Start ======= =======
     void goToPreviousFragments(RecipeSteps recipeStep){
+        Log.e(TAG, "Previous Recipe info : "+recipeStep.toString());
 //        showRecipeStepDetails(recipeStep);
         replaceRecipeNavigationFragments();
-
     }
 
     void goToNextFragments(RecipeSteps recipeStep){
+        Log.e(TAG, "Next Recipe info : "+recipeStep.toString());
 //        showRecipeStepDetails(recipeStep);
         replaceRecipeNavigationFragments();
     }
