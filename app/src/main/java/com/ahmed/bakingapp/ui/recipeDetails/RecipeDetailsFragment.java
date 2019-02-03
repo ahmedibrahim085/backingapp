@@ -188,6 +188,9 @@ public class RecipeDetailsFragment extends Fragment {
                 int position = viewHolder.getAdapterPosition();
                 recipeStepsInfo = recipeDetailsAdapter.getRecipeStepDetailsItems(position);
                 UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
+                if ( recipeStepsList.size()<UiConstants.getCurrentStepId()) {
+                    UiConstants.setCurrentStepId(recipeStepsList.size());
+                }
                 UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId()+1);
                 if (UiConstants.isTwoPan() ) {
                     if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
@@ -195,7 +198,7 @@ public class RecipeDetailsFragment extends Fragment {
                     }
                     showRecipeStepsNavigationFragment();
                 }else {
-                    showRecipeStepActivity(recipeStepsInfo);
+                    showRecipeStepActivity(recipeStepsList);
                 }
             }
         });
@@ -220,10 +223,10 @@ public class RecipeDetailsFragment extends Fragment {
         }
     }*/
 
-    private void showRecipeStepActivity(RecipeSteps recipeStep) {
+    private void showRecipeStepActivity(List<RecipeSteps> recipeStep) {
         Intent intent = new Intent(getActivity(), StepsActivity.class);
-        intent.putExtra(UiConstants.getRecipeSteps(), recipeStep);
-        intent.putExtra(UiConstants.getRecipeStepsNumber(), recipeStepsList.size());
+        intent.putExtra(UiConstants.getRecipeSteps(), (Serializable) recipeStep);
+        intent.putExtra(UiConstants.getRecipeStepsNumber(), recipeStep.size());
         intent.putExtra(UiConstants.getRecipeName(), recipeName);
         startActivity(intent);
     }
