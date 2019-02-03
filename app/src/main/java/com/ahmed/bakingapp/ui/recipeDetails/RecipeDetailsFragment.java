@@ -23,6 +23,7 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
+import com.ahmed.bakingapp.ui.steps.StepsActivity;
 import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
 import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
@@ -98,12 +99,16 @@ public class RecipeDetailsFragment extends Fragment {
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ( frameLayoutIngredients.getVisibility()==View.GONE ){
-                    frameLayoutIngredients.setVisibility(View.VISIBLE);
+                if (UiConstants.isTwoPan() ) {
+                    if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
+                        frameLayoutIngredients.setVisibility(View.VISIBLE);
+                    }
                 }
                 UiConstants.setCurrentStepId(0);
                 showRecipeIngredientDetails();
-                stepsNavigationFragment.updateNavigationFragmentView();
+                if (UiConstants.isTwoPan() ) {
+                    stepsNavigationFragment.updateNavigationFragmentView();
+                }
             }
         });
         setRecyclerView(view);
@@ -148,20 +153,7 @@ public class RecipeDetailsFragment extends Fragment {
         recipeStepsList = (List<RecipeSteps>) bundle.getSerializable(UiConstants.getRecipeSteps());
         recipeIngredientsList = (List<RecipeIngredients>) bundle.getSerializable(UiConstants.getRecipeIngredient());
         recipeName = bundle.getString(UiConstants.getRecipeName());
-/*
-        setAllRecipeStepsDescription();
-*/
     }
-/*    private void setAllRecipeStepsDescription(){
-        if ( oneRecipeStepInstructions == null) {
-            oneRecipeStepInstructions = new ArrayList();
-        }else{
-            oneRecipeStepInstructions.clear();
-        }
-        for (int i = 0; i< this.recipeStepsList.size(); i++){
-            oneRecipeStepInstructions.add(this.recipeStepsList.get(i).getStepsDescription());
-        }
-    }*/
 
     private void initializeLayouts() {
         if ( frameLayoutIngredients == null ) {
@@ -197,10 +189,14 @@ public class RecipeDetailsFragment extends Fragment {
                 recipeStepsInfo = recipeDetailsAdapter.getRecipeStepDetailsItems(position);
                 UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
                 UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId()+1);
-                if ( frameLayoutIngredients.getVisibility()==View.VISIBLE ){
-                    frameLayoutIngredients.setVisibility(View.GONE);
+                if (UiConstants.isTwoPan() ) {
+                    if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+                        frameLayoutIngredients.setVisibility(View.GONE);
+                    }
+                    showRecipeStepsNavigationFragment();
+                }else {
+                    showRecipeStepActivity(recipeStepsInfo);
                 }
-                showRecipeStepsNavigationFragment();
             }
         });
         recyclerView.setAdapter(recipeDetailsAdapter);
@@ -224,13 +220,13 @@ public class RecipeDetailsFragment extends Fragment {
         }
     }*/
 
-/*    private void showRecipeStepActivity(RecipeSteps recipeStep) {
+    private void showRecipeStepActivity(RecipeSteps recipeStep) {
         Intent intent = new Intent(getActivity(), StepsActivity.class);
         intent.putExtra(UiConstants.getRecipeSteps(), recipeStep);
         intent.putExtra(UiConstants.getRecipeStepsNumber(), recipeStepsList.size());
         intent.putExtra(UiConstants.getRecipeName(), recipeName);
         startActivity(intent);
-    }*/
+    }
 
 /*    private void showRecipeStepFragment(RecipeSteps recipeStep) {
         AppToast.showShort(getActivity(), "recipeStep id: = " + recipeStep.getStepsId());
