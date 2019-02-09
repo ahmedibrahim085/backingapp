@@ -10,18 +10,40 @@
     android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     tools:context=".ui.steps.StepsNavigationFragment">
 
+    <!-- activity_player.xml-->
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/video_view"
+        android:layout_margin="@dimen/margin8"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:use_controller="true"
+        app:repeat_toggle_modes="none"
+        app:show_timeout="50000" />
+
+    <TextView
+        android:id="@+id/tv_recipe_no_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin8" />
+    <!-- Divider -->
+    <View
+        android:id="@+id/v_description_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="@dimen/margin4"
+        android:layout_marginEnd="@dimen/margin4"
+        android:background="@android:color/darker_gray" />
     <TextView
         android:id="@+id/tv_oneRecipeStepInstruction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:text="This is a long Recipe instruction for one single step" />
+        android:layout_margin="@dimen/margin8" />
     <!-- Divider -->
     <View
+        android:id="@+id/v_navigation_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="@dimen/margin4"
@@ -31,6 +53,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         >
 
     <ImageView
@@ -39,9 +62,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/previous_recipe"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="@dimen/margin8"
         android:contentDescription="@string/describe_previous_recipe_navigation_image" />
 
 
@@ -49,9 +70,7 @@
         android:id="@+id/tv_numberOfSteps"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="@dimen/margin8"
         android:text="@string/recipe_step_counter"
         app:layout_constraintStart_toStartOf="@+id/img_previous_recipe"
         app:layout_constraintTop_toTopOf="@+id/img_previous_recipe" />
@@ -61,9 +80,7 @@
         android:id="@+id/img_next_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_margin="@dimen/margin8"
         android:contentDescription="@string/describe_next_recipe_navigation_image"
         android:src="@drawable/next_recipe"
         app:layout_constraintEnd_toEndOf="parent"

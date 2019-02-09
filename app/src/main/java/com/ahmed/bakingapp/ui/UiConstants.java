@@ -14,14 +14,16 @@ public class UiConstants {
     final private static String RECIPE_NAME = "recipeName";
     final private static String RECIPE_STEPS = "recipeSteps";
     final private static String RECIPE_STEPS_NUMBER = "recipeStepsNumber";
-    final private static String ONE_RECIPE_STEP_INSTRUCTION = "recipeStepInstruction";
+    final private static String RECIPE_VIDEO = "recipeVideo";
+
 
     // Strings - Variable
     private static  String recipeSingleStepDescription;
+    private static String recipeSingleStepVideo = "";
 
 //    private static List<RecipeSteps> selectedRecipeSteps;
 
-    // ======= ======= ======= Strings ======= ======= =======
+    // ======= ======= ======= Strings ======= Constants ======= =======
     public static String getRecipeItem() {
         return RECIPE_ITEM;
     }
@@ -42,16 +44,25 @@ public class UiConstants {
         return RECIPE_STEPS_NUMBER;
     }
 
-    public static String getOneRecipeStepInstruction() {
-        return ONE_RECIPE_STEP_INSTRUCTION;
+    public static String getRecipeVideo() {
+        return RECIPE_VIDEO;
     }
 
+    // ======= ======= ======= Strings ======= Variable ======= =======
     public static String getRecipeSingleStepDescription() {
         return recipeSingleStepDescription;
     }
 
     public static void setRecipeSingleStepDescription(String recipeSingleStepDescription) {
         UiConstants.recipeSingleStepDescription = recipeSingleStepDescription;
+    }
+
+    public static String getRecipeSingleStepVideo() {
+        return recipeSingleStepVideo;
+    }
+
+    public static void setRecipeSingleStepVideo(String recipeSingleStepVideo) {
+        UiConstants.recipeSingleStepVideo = recipeSingleStepVideo;
     }
 
     // ======= ======= ======= Integers ======= ======= =======

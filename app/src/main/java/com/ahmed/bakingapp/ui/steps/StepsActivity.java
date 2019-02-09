@@ -20,7 +20,6 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
 
     FragmentManager stepsFragmentManager;
 
-    private int numberOfRecipeSteps;
     List<RecipeSteps> recipeStepsList;
     StepsNavigationFragment stepsNavigationFragment;
     private RecipeSteps recipeStepsInfo;
@@ -33,17 +32,13 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
         stepsFragmentManager = getSupportFragmentManager();
         if (getIntent() != null)  {
             recipeStepsList =  (List<RecipeSteps>) getIntent().getSerializableExtra(UiConstants.getRecipeSteps());
-            if ( recipeStepsList.size()<=UiConstants.getCurrentStepId()) {
-                UiConstants.setCurrentStepId(recipeStepsList.size()-1);
-            }
-            recipeStepsInfo = recipeStepsList.get(UiConstants.getCurrentStepId());
-            UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
             UiConstants.setNumberOfSteps(recipeStepsList.size());
+            recipeStepsInfo = (RecipeSteps) getIntent().getSerializableExtra(UiConstants.getRecipeItem());
+            setRecipeStepInfo(recipeStepsInfo.getStepsId());
         }else{
             AppToast.showLong(App.getAppContext(),getString(R.string.error_show_steps));
             finish();
         }
-     ;
         if (savedInstanceState == null) {
             commitRecipeNavigationFragments();
         }
@@ -61,28 +56,30 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
 
 
     public void onPreviousRecipeSelected(int position) {
-        if ( position < 1 ) {
+        if ( position < 0 ) {
             AppToast.showLong(this,"This is the First Recipe Step");
         }else{
-            recipeStepsInfo = recipeStepsList.get(position);
-            UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
-            UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
+            setRecipeStepInfo(position);
             stepsNavigationFragment.updateNavigationFragmentView();
-
         }
     }
 
     @Override
     public void onNextRecipeSelected(int position) {
-        if ( position >= UiConstants.getNumberOfSteps() ) {
+        if ( position > UiConstants.getNumberOfSteps() ) {
             AppToast.showLong(this,"This is the last Recipe Step");
         }else{
-            recipeStepsInfo = recipeStepsList.get(position);
-            UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
-            UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
+            setRecipeStepInfo(position);
             stepsNavigationFragment.updateNavigationFragmentView();
         }
     }
 
     // =======
+
+    private void setRecipeStepInfo(int position) {
+        recipeStepsInfo = recipeStepsList.get(position);
+        UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
+        UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
+        UiConstants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+    }
 }
