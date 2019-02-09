@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,7 @@ import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
 import com.ahmed.bakingapp.ui.steps.StepsActivity;
 import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
+import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 import com.ahmed.bakingapp.utils.VideoPlayer;
 
@@ -81,6 +83,10 @@ public class RecipeDetailsFragment extends Fragment {
             }
         } else {
             setRecipeDetailsInfo(savedInstanceState);
+        }
+        if ( !UiConstants.isTwoPan() ) {
+            AppBars.setActionBar((AppCompatActivity) getActivity(),
+                    UiConstants.getRecipeTitle(), false);
         }
     }
 

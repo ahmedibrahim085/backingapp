@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
+import com.ahmed.bakingapp.ui.UiConstants;
+import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
 import java.io.Serializable;
@@ -35,8 +38,13 @@ public class IngredientsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if (getArguments() != null) {
             recipeIngredientsList = (List<RecipeIngredients>) getArguments().getSerializable("recipeIngredients");
+            if ( !UiConstants.isTwoPan() ) {
+                AppBars.setActionBar((AppCompatActivity) getActivity(),
+                        UiConstants.getRecipeTitle() + " - Ingredients", false);
+            }
         }
     }
 

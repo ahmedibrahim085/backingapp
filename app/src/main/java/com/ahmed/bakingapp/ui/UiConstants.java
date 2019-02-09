@@ -20,7 +20,7 @@ public class UiConstants {
     // Strings - Variable
     private static  String recipeSingleStepDescription;
     private static String recipeSingleStepVideo = "";
-
+    private static String recipeTitle;
 //    private static List<RecipeSteps> selectedRecipeSteps;
 
     // ======= ======= ======= Strings ======= Constants ======= =======
@@ -63,6 +63,14 @@ public class UiConstants {
 
     public static void setRecipeSingleStepVideo(String recipeSingleStepVideo) {
         UiConstants.recipeSingleStepVideo = recipeSingleStepVideo;
+    }
+
+    public static String getRecipeTitle() {
+        return recipeTitle;
+    }
+
+    public static void setRecipeTitle(String recipeTitle) {
+        UiConstants.recipeTitle = recipeTitle;
     }
 
     // ======= ======= ======= Integers ======= ======= =======

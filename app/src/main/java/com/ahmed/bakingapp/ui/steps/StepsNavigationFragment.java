@@ -38,7 +38,6 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     RecipeDetailsFragment recipeDetailsFragment;
     TextView tv_numberOfSteps;
     TextView tv_oneRecipeStepInstruction;
-    TextView tv_recipe_no_video;
     ImageView img_previousRecipe;
     ImageView img_nextRecipe;
     PlayerView exoPlayerView;
@@ -95,7 +94,6 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
         View stepsNavigationView = inflater.inflate(R.layout.fragment_recipe_steps_navigation,
                 container, false);
         setNavigationFragmentUI(stepsNavigationView);
-//        updateNavigationFragmentView();
         return stepsNavigationView;
     }
 
@@ -166,7 +164,6 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     private void setNavigationFragmentUI(View view) {
         // This is Organized vertically as in the view
         // Video
-        tv_recipe_no_video = view.findViewById(R.id.tv_recipe_no_video);
         exoPlayerView = view.findViewById(R.id.video_view);
         // Recipe Step Instructions
         tv_oneRecipeStepInstruction = view.findViewById(R.id.tv_oneRecipeStepInstruction);
@@ -193,18 +190,14 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
 
     private void updateRecipeVideoURL() {
         if ( UiConstants.getRecipeSingleStepVideo().isEmpty() ) {
-            tv_recipe_no_video.setVisibility(View.VISIBLE);
-            tv_recipe_no_video.setText(getActivity().getResources().getText(R.string.tv_no_video));
             exoPlayerView.setVisibility(View.GONE);
         } else {
-            tv_recipe_no_video.setVisibility(View.GONE);
             exoPlayerView.setVisibility(View.VISIBLE);
             Uri mediaUri = Uri.parse(UiConstants.getRecipeSingleStepVideo());
             if ( VideoPlayer.getmExoPlayer() == null ) {
                 VideoPlayer.initializePlayer(mediaUri, exoPlayerView, getActivity());
             }
             VideoPlayer.setPlayerMediaSource(getActivity(), mediaUri);
-
         }
     }
 

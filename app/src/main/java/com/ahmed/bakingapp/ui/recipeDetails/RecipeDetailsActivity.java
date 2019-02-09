@@ -16,6 +16,7 @@ import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.MainActivity;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
+import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
 
 import java.util.List;
@@ -46,6 +47,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
                         Objects.requireNonNull(getIntent().getExtras())
                                 .getSerializable(UiConstants.getRecipeItem()));
                 initFragments();
+                AppBars.setAppBars(this, recipeName, true);
             }
         }else {
             AppToast.showLong(App.getAppContext(),getString(R.string.error_show_recipe));
@@ -73,6 +75,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
         recipeIngredientsList = recipeItem.getRecipeItemIngredients();
         recipeName= recipeItem.getRecipeItemName();
+        UiConstants.setRecipeTitle(recipeName);
         UiConstants.setNumberOfSteps(recipeStepsList.size());
     }
     private void initFragments(){

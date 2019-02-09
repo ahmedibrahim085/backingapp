@@ -10,6 +10,7 @@ import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
+import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
 
 import java.util.List;
@@ -35,6 +36,9 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
             UiConstants.setNumberOfSteps(recipeStepsList.size());
             recipeStepsInfo = (RecipeSteps) getIntent().getSerializableExtra(UiConstants.getRecipeItem());
             setRecipeStepInfo(recipeStepsInfo.getStepsId());
+            if ( !UiConstants.isTwoPan() ) {
+                updateAppBar();
+            }
         }else{
             AppToast.showLong(App.getAppContext(),getString(R.string.error_show_steps));
             finish();
@@ -81,5 +85,14 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
         UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
         UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
         UiConstants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        updateAppBar();
+    }
+
+    private void updateAppBar() {
+        AppBars.setActionBar((AppCompatActivity) this,
+                UiConstants.getRecipeTitle()
+                        + " - "
+                        + recipeStepsInfo.getStepsShortDescription()
+                , false);
     }
 }
