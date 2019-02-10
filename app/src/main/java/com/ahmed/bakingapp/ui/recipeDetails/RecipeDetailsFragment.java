@@ -21,12 +21,12 @@ import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeSteps;
-import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
 import com.ahmed.bakingapp.ui.steps.StepsActivity;
 import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
 import com.ahmed.bakingapp.utils.AppBars;
+import com.ahmed.bakingapp.utils.Constants;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 import com.ahmed.bakingapp.utils.VideoPlayer;
 
@@ -42,7 +42,7 @@ public class RecipeDetailsFragment extends Fragment {
     // Lists
     List<RecipeSteps> recipeStepsList;
     List<RecipeIngredients> recipeIngredientsList;
-//    ArrayList oneRecipeStepInstructions;
+    //    ArrayList oneRecipeStepInstructions;
     // Objects
     private RecipeSteps recipeStepsInfo;
     // Layouts
@@ -53,7 +53,7 @@ public class RecipeDetailsFragment extends Fragment {
     //Strings
     private static final String TAG = RecipeDetailsFragment.class.getSimpleName();
     private String recipeName;
-//    public String recipeStepDescription;
+    //    public String recipeStepDescription;
     // Views
     private RecyclerView recyclerView;
     private RecipeDetailsAdapter recipeDetailsAdapter;
@@ -66,9 +66,9 @@ public class RecipeDetailsFragment extends Fragment {
                                                     List<RecipeIngredients> recipeIngredients, String recipeItemName) {
         RecipeDetailsFragment fragment = new RecipeDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(UiConstants.getRecipeSteps(), (Serializable) recipeSteps);
-        args.putSerializable(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
-        args.putString(UiConstants.getRecipeName(), recipeItemName);
+        args.putSerializable(Constants.getRecipeSteps(), (Serializable) recipeSteps);
+        args.putSerializable(Constants.getRecipeIngredient(), (Serializable) recipeIngredients);
+        args.putString(Constants.getRecipeName(), recipeItemName);
 
         fragment.setArguments(args);
         return fragment;
@@ -84,9 +84,9 @@ public class RecipeDetailsFragment extends Fragment {
         } else {
             setRecipeDetailsInfo(savedInstanceState);
         }
-        if ( !UiConstants.isTwoPan() ) {
+        if ( !Constants.isTwoPan() ) {
             AppBars.setActionBar((AppCompatActivity) getActivity(),
-                    UiConstants.getRecipeTitle(), false);
+                    Constants.getRecipeTitle(), false);
         }
     }
 
@@ -105,15 +105,8 @@ public class RecipeDetailsFragment extends Fragment {
         tv_recipe_ingredients.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (UiConstants.isTwoPan() ) {
-                    VideoPlayer.stopPlayer();
-                    VideoPlayer.releasePlayer();
-                    if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
-                        frameLayoutIngredients.setVisibility(View.VISIBLE);
-                    }
-                    if ( constraintLayout_recipeStepDetails.getVisibility() == View.VISIBLE ) {
-                        constraintLayout_recipeStepDetails.setVisibility(View.GONE);
-                    }
+                if ( Constants.isTwoPan() ) {
+                    showIngredientsHideInstructions();
                 }
                 showRecipeIngredientDetails();
             }
@@ -124,7 +117,7 @@ public class RecipeDetailsFragment extends Fragment {
 
         // in TwoPane = true this will cause the Ingredients Fragment to show Automatically
         // without the user clicking it.
-        if ( UiConstants.isTwoPan() ) {
+        if ( Constants.isTwoPan() ) {
             showRecipeIngredientDetails();
         }
     }
@@ -132,7 +125,7 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if ( UiConstants.isTwoPan() ) {
+        if ( Constants.isTwoPan() ) {
             Log.e(TAG, "onStop onStop onStop onStop onStop onStop");
             VideoPlayer.releasePlayer();
         }
@@ -142,18 +135,58 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(UiConstants.getRecipeSteps(), (Serializable) recipeStepsList);
-        outState.putSerializable(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredientsList);
-        outState.putString(UiConstants.getRecipeName(), recipeName);
+        outState.putSerializable(Constants.getRecipeSteps(), (Serializable) recipeStepsList);
+        outState.putSerializable(Constants.getRecipeIngredient(), (Serializable) recipeIngredientsList);
+        outState.putString(Constants.getRecipeName(), recipeName);
+        if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+            outState.putBoolean(Constants.getRecipeIngredientShow(), true);
+        } else {
+            outState.putBoolean(Constants.getRecipeIngredientShow(), false);
+        }
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if ( savedInstanceState !=null ){
+        initializeLayouts();
+        initializeFragments();
+        if ( savedInstanceState != null ) {
             setRecipeDetailsInfo(savedInstanceState);
-            initializeLayouts();
-            initializeFragments();
+            recipeStepsList = (List<RecipeSteps>) savedInstanceState.getSerializable(Constants.getRecipeSteps());
+            recipeIngredientsList = (List<RecipeIngredients>) savedInstanceState.getSerializable(Constants.getRecipeIngredient());
+            recipeName = savedInstanceState.getString(Constants.getRecipeName());
+            if ( !savedInstanceState.getBoolean(Constants.getRecipeIngredientShow()) ) {
+                showInstructionsHideIngredients();
+            } else {
+                showIngredientsHideInstructions();
+            }
+        }
+    }
+
+
+    private void showIngredientsHideInstructions() {
+        if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
+            frameLayoutIngredients.setVisibility(View.VISIBLE);
+        }
+        if ( constraintLayout_recipeStepDetails.getVisibility() == View.VISIBLE ) {
+            constraintLayout_recipeStepDetails.setVisibility(View.GONE);
+        }
+        VideoPlayer.stopPlayer();
+        VideoPlayer.releasePlayer();
+    }
+
+    private void showInstructionsHideIngredients() {
+        if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+            frameLayoutIngredients.setVisibility(View.GONE);
+        }
+        if ( constraintLayout_recipeStepDetails.getVisibility() == View.GONE ) {
+            constraintLayout_recipeStepDetails.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void hideIngredientsListLayout() {
+        if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+            frameLayoutIngredients.setVisibility(View.GONE);
         }
     }
 
@@ -164,20 +197,21 @@ public class RecipeDetailsFragment extends Fragment {
     // ======= ======= ======= SetUp UI ======= START ======= =======
 
     private void setRecipeDetailsInfo(@NonNull Bundle bundle) {
-        recipeStepsList = (List<RecipeSteps>) bundle.getSerializable(UiConstants.getRecipeSteps());
-        recipeIngredientsList = (List<RecipeIngredients>) bundle.getSerializable(UiConstants.getRecipeIngredient());
-        recipeName = bundle.getString(UiConstants.getRecipeName());
+        recipeStepsList = (List<RecipeSteps>) bundle.getSerializable(Constants.getRecipeSteps());
+        recipeIngredientsList = (List<RecipeIngredients>) bundle.getSerializable(Constants.getRecipeIngredient());
+        recipeName = bundle.getString(Constants.getRecipeName());
     }
 
     private void initializeLayouts() {
         if ( frameLayoutIngredients == null ) {
             frameLayoutIngredients = (FrameLayout) getActivity().findViewById(R.id.frameLayout_ingredients);
         }
-        if ( constraintLayout_recipeStepDetails == null ){
+        if ( constraintLayout_recipeStepDetails == null ) {
             constraintLayout_recipeStepDetails =
-                    (ConstraintLayout)getActivity().findViewById(R.id.constraintLayout_steps);
+                    (ConstraintLayout) getActivity().findViewById(R.id.constraintLayout_steps);
         }
     }
+
     private void initializeFragments() {
         if ( fragmentManagerRecipeDetails == null ) {
             fragmentManagerRecipeDetails = getActivity().getSupportFragmentManager();
@@ -201,18 +235,13 @@ public class RecipeDetailsFragment extends Fragment {
                 RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder) view.getTag();
                 int position = viewHolder.getAdapterPosition();
                 setRecipeStepInfo(position);
-                if (UiConstants.isTwoPan() ) {
+                if ( Constants.isTwoPan() ) {
                     if ( VideoPlayer.getmExoPlayer() != null ) {
                         VideoPlayer.getmExoPlayer().stop();
                     }
-                    if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
-                        frameLayoutIngredients.setVisibility(View.GONE);
-                    }
-                    if ( constraintLayout_recipeStepDetails.getVisibility() == View.GONE ) {
-                        constraintLayout_recipeStepDetails.setVisibility(View.VISIBLE);
-                    }
+                    showInstructionsHideIngredients();
                     showRecipeStepsNavigationFragment();
-                }else {
+                } else {
                     showRecipeStepActivity(recipeStepsList);
                 }
             }
@@ -223,9 +252,9 @@ public class RecipeDetailsFragment extends Fragment {
 
     private void setRecipeStepInfo(int position) {
         recipeStepsInfo = recipeStepsList.get(position);
-        UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
-        UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
-        UiConstants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        Constants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
+        Constants.setCurrentStepId(recipeStepsInfo.getStepsId());
+        Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
     }
     // ======= ======= ======= SetUp UI ======= END/FIN ======= =======
 
@@ -236,10 +265,10 @@ public class RecipeDetailsFragment extends Fragment {
 
     private void showRecipeStepActivity(List<RecipeSteps> recipeStep) {
         Intent intent = new Intent(getActivity(), StepsActivity.class);
-        intent.putExtra(UiConstants.getRecipeSteps(), (Serializable) recipeStep);
-//        intent.putExtra(UiConstants.getRecipeStepsNumber(), recipeStep.size());
-        intent.putExtra(UiConstants.getRecipeItem(), (Serializable) recipeStepsInfo);
-        intent.putExtra(UiConstants.getRecipeName(), recipeName);
+        intent.putExtra(Constants.getRecipeSteps(), (Serializable) recipeStep);
+//        intent.putExtra(Constants.getRecipeStepsNumber(), recipeStep.size());
+        intent.putExtra(Constants.getRecipeItem(), (Serializable) recipeStepsInfo);
+        intent.putExtra(Constants.getRecipeName(), recipeName);
         startActivity(intent);
     }
 
@@ -248,28 +277,24 @@ public class RecipeDetailsFragment extends Fragment {
     // ======= LeftSide ======= ======= ======= ======= ======= ======= LeftSide ======= =======
 
     // =======  ======= ======= ======= Fragments Controllers ======= Start ======= =======
-    void goToPreviousFragments(RecipeSteps recipeStep){
-        Log.e(TAG, "Previous Recipe info : "+recipeStep.toString());
-        if ( UiConstants.isTwoPan() ) {
-            if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
-                frameLayoutIngredients.setVisibility(View.GONE);
-            }
-            }
-            // DO something to update Recipe Fragment to the previous one
-        setRecipeStepInfo(recipeStep.getStepsId());
-            replaceRecipeNavigationFragments();
-    }
-
-    void goToNextFragments(RecipeSteps recipeStep){
-            Log.e(TAG, "Next Recipe info : "+recipeStep.toString());
-        if ( UiConstants.isTwoPan() ) {
-            if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
-                frameLayoutIngredients.setVisibility(View.GONE);
-            }
+    void goToPreviousFragments(RecipeSteps recipeStep) {
+        Log.e(TAG, "Previous Recipe info : " + recipeStep.toString());
+        if ( Constants.isTwoPan() ) {
+            hideIngredientsListLayout();
         }
         // DO something to update Recipe Fragment to the previous one
         setRecipeStepInfo(recipeStep.getStepsId());
-            replaceRecipeNavigationFragments();
+        replaceRecipeNavigationFragments();
+    }
+
+    void goToNextFragments(RecipeSteps recipeStep) {
+        Log.e(TAG, "Next Recipe info : " + recipeStep.toString());
+        if ( Constants.isTwoPan() ) {
+            hideIngredientsListLayout();
+        }
+        // DO something to update Recipe Fragment to the previous one
+        setRecipeStepInfo(recipeStep.getStepsId());
+        replaceRecipeNavigationFragments();
     }
     // =======  ======= ======= ======= Fragments Controllers ======= End/FIN ======= =======
 
@@ -280,8 +305,8 @@ public class RecipeDetailsFragment extends Fragment {
     // ======= ======= ======= 1- Show Recipe Ingredients ======= START ======= =======
     private void showRecipeIngredientDetails() {
         Log.e(TAG,
-                "showRecipeIngredientDetails - \n UiConstants.isTwoPan() - value is: " + UiConstants.isTwoPan());
-        if ( !UiConstants.isTwoPan() ) {
+                "showRecipeIngredientDetails - \n Constants.isTwoPan() - value is: " + Constants.isTwoPan());
+        if ( !Constants.isTwoPan() ) {
             showRecipeIngredientDetailsActivity(recipeIngredientsList);
         } else {
             showRecipeIngredientDetailsFragment(recipeIngredientsList);
@@ -292,20 +317,20 @@ public class RecipeDetailsFragment extends Fragment {
         Log.e(TAG,
                 "showRecipeIngredientDetailsActivity - recipeIngredients : " + recipeIngredients);
         Intent intent = new Intent(getActivity(), IngredientActivity.class);
-        intent.putExtra(UiConstants.getRecipeIngredient(), (Serializable) recipeIngredients);
-        intent.putExtra(UiConstants.getRecipeName(), recipeName);
+        intent.putExtra(Constants.getRecipeIngredient(), (Serializable) recipeIngredients);
+        intent.putExtra(Constants.getRecipeName(), recipeName);
         startActivity(intent);
     }
 
     private void showRecipeIngredientDetailsFragment(List<RecipeIngredients> recipeIngredients) {
-        fragmentManagerRecipeDetails.beginTransaction()
-                .replace(frameLayoutIngredients.getId(), ingredientsFragment)
-                .commit();
+        if ( !ingredientsFragment.isAdded() ) {
+            fragmentManagerRecipeDetails.beginTransaction()
+                    .replace(frameLayoutIngredients.getId(), ingredientsFragment)
+                    .commit();
+        }
     }
 
     // ======= ======= ======= 1- Show Recipe Ingredients ======= END/FIN ======= =======
-
-
 
 
     // ======= ======= ======= 4- Show Recipe Navigation Fragment ======= START ======= =======
@@ -313,27 +338,30 @@ public class RecipeDetailsFragment extends Fragment {
     private void showRecipeStepsNavigationFragment() {
         if ( stepsNavigationFragment == null ) {
             stepsNavigationFragment =
-                    StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps());
+                    StepsNavigationFragment.newInstance(Constants.getNumberOfSteps());
         }
         if ( !stepsNavigationFragment.isAdded() ) {
-            fragmentManagerRecipeDetails.beginTransaction()
-                    .add(R.id.frameLayout_recipe_steps_navigation, stepsNavigationFragment)
-                    .commit();
+            replaceRecipeNavigationFragments();
+//            fragmentManagerRecipeDetails.beginTransaction()
+//                    .add(R.id.frameLayout_recipe_steps_navigation, stepsNavigationFragment)
+//                    .commit();
         } else {
             stepsNavigationFragment.updateNavigationFragmentView();
-            replaceRecipeNavigationFragments();
+//            replaceRecipeNavigationFragments();
         }
     }
 
     private void replaceRecipeNavigationFragments() {
         if ( stepsNavigationFragment == null ) {
             stepsNavigationFragment =
-                    StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps());
+                    StepsNavigationFragment.newInstance(Constants.getNumberOfSteps());
         }
         // replace Steps Navigation Fragment
+        if ( !stepsNavigationFragment.isAdded() ) {
             fragmentManagerRecipeDetails.beginTransaction()
                     .replace(R.id.frameLayout_recipe_steps_navigation, stepsNavigationFragment)
                     .commit();
+        }
     }
     // ======= ======= ======= 4- Show Recipe Navigation Fragment ======= END/FIN ======= =======
 

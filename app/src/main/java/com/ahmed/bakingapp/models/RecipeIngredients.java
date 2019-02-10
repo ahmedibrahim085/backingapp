@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class RecipeIngredients implements Serializable {
 
     private static final String TAG = RecipeIngredients.class.getSimpleName();
-    // Recipe Ingredients JSON UiConstants
+    // Recipe Ingredients JSON Constants
     private static final String INGREDIENTS_QUANTITY = "quantity";
     private static final String INGREDIENTS_MEASURE = "measure";
     private static final String INGREDIENTS_INGREDIENT = "ingredient";

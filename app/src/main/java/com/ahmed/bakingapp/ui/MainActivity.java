@@ -15,6 +15,7 @@ import com.ahmed.bakingapp.network.RecipeClient;
 import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsActivity;
 import com.ahmed.bakingapp.ui.recipes.RecipesAdapter;
 import com.ahmed.bakingapp.utils.AppBars;
+import com.ahmed.bakingapp.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_recipes_list);
         // Twopane value is returned programmatically from Android Configuration - See AppClass
-        Log.d(TAG, "twoPane - MainActivity - onCreate - is:"+UiConstants.isTwoPan());
+        Log.d(TAG, "twoPane - MainActivity - onCreate - is:" + Constants.isTwoPan());
         initUI();
         getRecipes();
 
@@ -115,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private void showRecipeDetails(RecipeItem recipeItem){
         Log.d(TAG, "recipeItem clicked is  : "+ recipeItem.getRecipeItemName());
         Intent intent = new Intent(this, RecipeDetailsActivity.class);
-        intent.putExtra(UiConstants.getRecipeItem(), recipeItem);
+        intent.putExtra(Constants.getRecipeItem(), recipeItem);
         startActivity(intent);
     }
     // ======= ======= ======= Open recipeDetails Activity  ======= END/FIN ======= =======

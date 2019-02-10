@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -13,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ahmed.bakingapp.R;
-import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 import com.ahmed.bakingapp.ui.recipeDetails.RecipeDetailsFragment;
+import com.ahmed.bakingapp.utils.Constants;
 import com.ahmed.bakingapp.utils.VideoPlayer;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerView;
@@ -30,7 +32,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     private static final String TAG = StepsNavigationFragment.class.getSimpleName();
 
     // the fragment initialization parameters,
-    private static final String ARG_NUMBER_OF_STEPS = UiConstants.getRecipeStepsNumber();
+    private static final String ARG_NUMBER_OF_STEPS = Constants.getRecipeStepsNumber();
 
     private int numberOfRecipeSteps;
 
@@ -41,8 +43,6 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     ImageView img_previousRecipe;
     ImageView img_nextRecipe;
     PlayerView exoPlayerView;
-
-    private String playerStatus;
 
 
     public StepsNavigationFragment() {
@@ -79,11 +79,14 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if ( getArguments() != null ) {
-            numberOfRecipeSteps = getArguments().getInt(ARG_NUMBER_OF_STEPS);
+        if ( savedInstanceState == null ) {
+            if ( getArguments() != null ) {
+                numberOfRecipeSteps = getArguments().getInt(ARG_NUMBER_OF_STEPS);
+            }
+            if ( recipeDetailsFragment == null ) {
+                recipeDetailsFragment = new RecipeDetailsFragment();
+            }
         }
-        recipeDetailsFragment = new RecipeDetailsFragment();
-
     }
 
     @Override
@@ -101,18 +104,17 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     public void onResume() {
         super.onResume();
         VideoPlayer.initializeMediaSession(getActivity());
-        VideoPlayer.initializePlayer(Uri.parse(UiConstants.getRecipeSingleStepVideo()), exoPlayerView, getActivity());
+        VideoPlayer.initializePlayer(Uri.parse(Constants.getRecipeSingleStepVideo()), exoPlayerView, getActivity());
         updateNavigationFragmentView();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if ( !UiConstants.isTwoPan() ) {
+        if ( !Constants.isTwoPan() ) {
             VideoPlayer.releasePlayer();
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -122,11 +124,47 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        updateNavigationFragmentView();
         int currentOrientation = getActivity().getResources().getConfiguration().orientation;
         if ( currentOrientation == Configuration.ORIENTATION_LANDSCAPE ) {
             hideSystemUiFullScreen();
         } else {
             hideSystemUi();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if ( VideoPlayer.getmExoPlayer() != null ) {
+            // ExoPLayer Window Index
+            outState.putInt(Constants.getPlayerWindowIndex(),
+                    VideoPlayer.getmExoPlayer().getCurrentWindowIndex());
+            // ExoPLayer Current Position
+            outState.putLong(Constants.getPlayerCurrentPosition(),
+                    VideoPlayer.getmExoPlayer().getCurrentPosition());
+            // ExoPLayer boolean Play When Ready
+            outState.putBoolean(Constants.getPlayerWhenReady(),
+                    VideoPlayer.getmExoPlayer().getPlayWhenReady());
+        }
+        outState.putInt(Constants.getRecipeStepsNumber(), numberOfRecipeSteps);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if ( savedInstanceState != null ) {
+            numberOfRecipeSteps = savedInstanceState.getInt(Constants.getRecipeStepsNumber());
+            if ( exoPlayerView.getVisibility() == View.VISIBLE ) {
+                if ( VideoPlayer.getmExoPlayer() == null ) {
+                    VideoPlayer.initializeMediaSession(getActivity());
+                    VideoPlayer.initializePlayer(Uri.parse(Constants.getRecipeSingleStepVideo()), exoPlayerView, getActivity());
+                }
+                int windowIndex = savedInstanceState.getInt(Constants.getPlayerWindowIndex());
+                long positionMs = savedInstanceState.getLong(Constants.getPlayerCurrentPosition());
+                VideoPlayer.getmExoPlayer().seekTo(windowIndex, positionMs);
+                VideoPlayer.getmExoPlayer().setPlayWhenReady(savedInstanceState.getBoolean(Constants.getPlayerWhenReady()));
+            }
         }
     }
 
@@ -180,7 +218,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     }
 
     public void updateNavigationFragmentView() {
-        tv_oneRecipeStepInstruction.setText(UiConstants.getRecipeSingleStepDescription());
+        tv_oneRecipeStepInstruction.setText(Constants.getRecipeSingleStepDescription());
         updateNavigationImageButtons();
         updateRecipeStepCounter();
         updateRecipeVideoURL();
@@ -189,11 +227,11 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     //  ======= ======= ======= Video Controllers ======= START ======= =======
 
     private void updateRecipeVideoURL() {
-        if ( UiConstants.getRecipeSingleStepVideo().isEmpty() ) {
+        if ( Constants.getRecipeSingleStepVideo().isEmpty() ) {
             exoPlayerView.setVisibility(View.GONE);
         } else {
             exoPlayerView.setVisibility(View.VISIBLE);
-            Uri mediaUri = Uri.parse(UiConstants.getRecipeSingleStepVideo());
+            Uri mediaUri = Uri.parse(Constants.getRecipeSingleStepVideo());
             if ( VideoPlayer.getmExoPlayer() == null ) {
                 VideoPlayer.initializePlayer(mediaUri, exoPlayerView, getActivity());
             }
@@ -208,13 +246,12 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
         img_previousRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UiConstants.setCurrentStepId(UiConstants.getCurrentStepId() - 1);
-                if ( UiConstants.getCurrentStepId() < 0 ) {
-                    UiConstants.setCurrentStepId(0);
+                Constants.setCurrentStepId(Constants.getCurrentStepId() - 1);
+                if ( Constants.getCurrentStepId() < 0 ) {
+                    Constants.setCurrentStepId(0);
                 }
                 VideoPlayer.getmExoPlayer().stop();
-
-                onRecipeNavigationClickListener.onPreviousRecipeSelected(UiConstants.getCurrentStepId());
+                onRecipeNavigationClickListener.onPreviousRecipeSelected(Constants.getCurrentStepId());
                 updateNavigationFragmentView();
             }
         });
@@ -224,12 +261,12 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
         img_nextRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UiConstants.setCurrentStepId(UiConstants.getCurrentStepId() + 1);
-                if ( UiConstants.getCurrentStepId() >= numberOfRecipeSteps ) {
-                    UiConstants.setCurrentStepId(numberOfRecipeSteps - 1);
+                Constants.setCurrentStepId(Constants.getCurrentStepId() + 1);
+                if ( Constants.getCurrentStepId() >= numberOfRecipeSteps ) {
+                    Constants.setCurrentStepId(numberOfRecipeSteps - 1);
                 }
                 VideoPlayer.getmExoPlayer().stop();
-                onRecipeNavigationClickListener.onNextRecipeSelected(UiConstants.getCurrentStepId());
+                onRecipeNavigationClickListener.onNextRecipeSelected(Constants.getCurrentStepId());
                 updateNavigationFragmentView();
             }
         });
@@ -238,10 +275,10 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     //  ======= ======= ======= Steps Navigation Controllers - SET - ======= END/FIN ======= =======
     // ======= Steps Navigation Controllers - User Navigates - ======= START =======
     private void updateNavigationImageButtons() {
-        if ( UiConstants.getCurrentStepId() == 0 ) {
+        if ( Constants.getCurrentStepId() == 0 ) {
             img_previousRecipe.setVisibility(View.GONE);
             img_nextRecipe.setVisibility(View.VISIBLE);
-        } else if ( UiConstants.getCurrentStepId() == (numberOfRecipeSteps - 1) ) {
+        } else if ( Constants.getCurrentStepId() == (numberOfRecipeSteps - 1) ) {
             img_nextRecipe.setVisibility(View.GONE);
             img_previousRecipe.setVisibility(View.VISIBLE);
         } else {
@@ -251,14 +288,14 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     }
 
     private void updateRecipeStepCounter() {
-        if ( UiConstants.getCurrentStepId() == 0 ) {
+        if ( Constants.getCurrentStepId() == 0 ) {
             tv_numberOfSteps.setText(getActivity().getResources().getString(R.string.navigation_goto_instructions));
-        } else if ( UiConstants.getCurrentStepId() == (numberOfRecipeSteps - 1) ) {
+        } else if ( Constants.getCurrentStepId() == (numberOfRecipeSteps - 1) ) {
             tv_numberOfSteps.setText(getActivity().getResources().getString(R.string.navigation_back_instructions));
         } else {
             String stepCounter =
                     String.format(getActivity().getResources().getString(R.string.recipe_step_counter),
-                            UiConstants.getCurrentStepId(), numberOfRecipeSteps - 1);
+                            Constants.getCurrentStepId(), numberOfRecipeSteps - 1);
             tv_numberOfSteps.setText(stepCounter);
         }
     }

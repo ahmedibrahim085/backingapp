@@ -70,8 +70,9 @@ public class VideoPlayer implements Player.EventListener {
     public static void initializeMediaSession(Activity activity) {
 
         // Create a MediaSessionCompat.
-        setmMediaSession(new MediaSessionCompat(activity, TAG));
-
+        if ( getmMediaSession() == null ) {
+            setmMediaSession(new MediaSessionCompat(activity, TAG));
+        }
         // Enable callbacks from MediaButtons and TransportControls.
         getmMediaSession().setFlags(
                 MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS |

@@ -8,8 +8,8 @@ import android.util.Log;
 import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
-import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.utils.AppToast;
+import com.ahmed.bakingapp.utils.Constants;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,12 +26,12 @@ public class IngredientActivity extends AppCompatActivity {
         Log.e(TAG, "This is IngredientActivity onCreate");
         setContentView(R.layout.activity_ingredient);
         if (getIntent()!=null) {
-            if (getIntent().hasExtra(UiConstants.getRecipeIngredient())) {
+            if ( getIntent().hasExtra(Constants.getRecipeIngredient()) ) {
                 recipeIngredients =
                         (List<RecipeIngredients>) Objects.requireNonNull(getIntent().getExtras())
-                                .getSerializable(UiConstants.getRecipeIngredient());
+                                .getSerializable(Constants.getRecipeIngredient());
 
-                recipeName = getIntent().getExtras().getString(UiConstants.getRecipeName());
+                recipeName = getIntent().getExtras().getString(Constants.getRecipeName());
                 initIngredientsFragments();
             }
         }else {

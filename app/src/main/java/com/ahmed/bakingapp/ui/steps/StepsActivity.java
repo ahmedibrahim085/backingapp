@@ -8,10 +8,10 @@ import android.util.Log;
 import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeSteps;
-import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
+import com.ahmed.bakingapp.utils.Constants;
 
 import java.util.List;
 
@@ -32,11 +32,11 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
         setContentView(R.layout.activity_steps);
         stepsFragmentManager = getSupportFragmentManager();
         if (getIntent() != null)  {
-            recipeStepsList =  (List<RecipeSteps>) getIntent().getSerializableExtra(UiConstants.getRecipeSteps());
-            UiConstants.setNumberOfSteps(recipeStepsList.size());
-            recipeStepsInfo = (RecipeSteps) getIntent().getSerializableExtra(UiConstants.getRecipeItem());
+            recipeStepsList = (List<RecipeSteps>) getIntent().getSerializableExtra(Constants.getRecipeSteps());
+            Constants.setNumberOfSteps(recipeStepsList.size());
+            recipeStepsInfo = (RecipeSteps) getIntent().getSerializableExtra(Constants.getRecipeItem());
             setRecipeStepInfo(recipeStepsInfo.getStepsId());
-            if ( !UiConstants.isTwoPan() ) {
+            if ( !Constants.isTwoPan() ) {
                 updateAppBar();
             }
         }else{
@@ -52,7 +52,7 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
     private void commitRecipeNavigationFragments() {
         // commit Steps Navigation Fragment
         stepsNavigationFragment =
-                StepsNavigationFragment.newInstance(UiConstants.getNumberOfSteps());
+                StepsNavigationFragment.newInstance(Constants.getNumberOfSteps());
         stepsFragmentManager.beginTransaction()
                 .add(R.id.frameLayout_recipe_steps_navigation,
                         stepsNavigationFragment).commit();
@@ -70,7 +70,7 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
 
     @Override
     public void onNextRecipeSelected(int position) {
-        if ( position > UiConstants.getNumberOfSteps() ) {
+        if ( position > Constants.getNumberOfSteps() ) {
             AppToast.showLong(this,"This is the last Recipe Step");
         }else{
             setRecipeStepInfo(position);
@@ -82,15 +82,15 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
 
     private void setRecipeStepInfo(int position) {
         recipeStepsInfo = recipeStepsList.get(position);
-        UiConstants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
-        UiConstants.setCurrentStepId(recipeStepsInfo.getStepsId());
-        UiConstants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        Constants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
+        Constants.setCurrentStepId(recipeStepsInfo.getStepsId());
+        Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
         updateAppBar();
     }
 
     private void updateAppBar() {
         AppBars.setActionBar((AppCompatActivity) this,
-                UiConstants.getRecipeTitle()
+                Constants.getRecipeTitle()
                         + " - "
                         + recipeStepsInfo.getStepsShortDescription()
                 , false);

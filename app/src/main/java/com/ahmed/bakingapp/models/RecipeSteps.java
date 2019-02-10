@@ -9,7 +9,7 @@ public class RecipeSteps implements Serializable {
 
 
     private static final String TAG = RecipeSteps.class.getSimpleName();
-    // Recipe Steps JSON UiConstants
+    // Recipe Steps JSON Constants
     private static final String STEPS_ID = "id";
     private static final String STEPS_SHORT_DESCRIPTION = "shortDescription";
     private static final String STEPS_DESCRIPTION = "description";

@@ -14,10 +14,10 @@ import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeItem;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.MainActivity;
-import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
+import com.ahmed.bakingapp.utils.Constants;
 
 import java.util.List;
 import java.util.Objects;
@@ -42,10 +42,10 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_details);
         if (getIntent()!=null) {
-            if (getIntent().hasExtra(UiConstants.getRecipeItem())) {
+            if ( getIntent().hasExtra(Constants.getRecipeItem()) ) {
                 setRecipeDetailsInfo((RecipeItem)
                         Objects.requireNonNull(getIntent().getExtras())
-                                .getSerializable(UiConstants.getRecipeItem()));
+                                .getSerializable(Constants.getRecipeItem()));
                 initFragments();
                 AppBars.setAppBars(this, recipeName, true);
             }
@@ -58,7 +58,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(UiConstants.getRecipeItem(), recipeItem);
+        outState.putSerializable(Constants.getRecipeItem(), recipeItem);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         super.onRestoreInstanceState(savedInstanceState);
         setRecipeDetailsInfo((RecipeItem)
                 Objects.requireNonNull(savedInstanceState
-                        .getSerializable(UiConstants.getRecipeItem())));
+                        .getSerializable(Constants.getRecipeItem())));
         initFragments();
     }
 
@@ -75,16 +75,20 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         recipeStepsList = Objects.requireNonNull(recipeItem).getRecipeItemSteps();
         recipeIngredientsList = recipeItem.getRecipeItemIngredients();
         recipeName= recipeItem.getRecipeItemName();
-        UiConstants.setRecipeTitle(recipeName);
-        UiConstants.setNumberOfSteps(recipeStepsList.size());
+        Constants.setRecipeTitle(recipeName);
+        Constants.setNumberOfSteps(recipeStepsList.size());
     }
     private void initFragments(){
         fragmentManager = getSupportFragmentManager();
-        recipeDetailsFragment = RecipeDetailsFragment.newInstance
-                (recipeStepsList,recipeIngredientsList, recipeName);
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_master_recipe_details_list, recipeDetailsFragment)
-                .commit();
+        if ( recipeDetailsFragment == null ) {
+            recipeDetailsFragment = RecipeDetailsFragment.newInstance
+                    (recipeStepsList, recipeIngredientsList, recipeName);
+        }
+        if ( !recipeDetailsFragment.isAdded() ) {
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_master_recipe_details_list, recipeDetailsFragment)
+                    .commit();
+        }
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -121,7 +125,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
             AppToast.showLong(this,"This is the last Recipe Step");
         }else{
             // Do Fragment Update
-//            UiConstants.setCurrentStepId(UiConstants.getCurrentStepId()+1);
+//            Constants.setCurrentStepId(Constants.getCurrentStepId()+1);
             recipeDetailsFragment.goToNextFragments(recipeStepsList.get(position));
         }
     }

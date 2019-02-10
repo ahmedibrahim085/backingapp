@@ -8,7 +8,7 @@ import java.util.List;
 public class RecipeItem implements Serializable {
 
     private static final String TAG = RecipeItem.class.getSimpleName();
-    // Recipe JSON UiConstants
+    // Recipe JSON Constants
     private static final String RECIPE_ID = "id";
     private static final String RECIPE_NAME = "name";
     private static final String RECIPE_INGREDIENTS = "ingredients";

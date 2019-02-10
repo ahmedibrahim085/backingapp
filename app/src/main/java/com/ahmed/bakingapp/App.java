@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 
-import com.ahmed.bakingapp.ui.UiConstants;
+import com.ahmed.bakingapp.utils.Constants;
 
 public  class App extends Application {
 
@@ -28,7 +28,7 @@ public  class App extends Application {
         }else {
             setDebuggable(false);
         }
-        UiConstants.setTwoPan(isW900DpSupported());
+        Constants.setTwoPan(isW900DpSupported());
     }
 
     private void initiateAppSharedPrefs(Context context){

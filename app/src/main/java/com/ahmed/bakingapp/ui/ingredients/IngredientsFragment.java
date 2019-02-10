@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
-import com.ahmed.bakingapp.ui.UiConstants;
 import com.ahmed.bakingapp.utils.AppBars;
+import com.ahmed.bakingapp.utils.Constants;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 
 import java.io.Serializable;
@@ -41,9 +41,9 @@ public class IngredientsFragment extends Fragment {
         setHasOptionsMenu(true);
         if (getArguments() != null) {
             recipeIngredientsList = (List<RecipeIngredients>) getArguments().getSerializable("recipeIngredients");
-            if ( !UiConstants.isTwoPan() ) {
+            if ( !Constants.isTwoPan() ) {
                 AppBars.setActionBar((AppCompatActivity) getActivity(),
-                        UiConstants.getRecipeTitle() + " - Ingredients", false);
+                        Constants.getRecipeTitle() + " - Ingredients", false);
             }
         }
     }
