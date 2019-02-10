@@ -1,6 +1,6 @@
-package com.ahmed.bakingapp.ui;
+package com.ahmed.bakingapp.utils;
 
-public class UiConstants {
+public class Constants {
     // Booleans
     private static boolean twoPan;
 
@@ -9,19 +9,25 @@ public class UiConstants {
     private static int numberOfSteps;
 
     // Strings - Constants
-    final private static String RECIPE_ITEM = "recipeItem";
-    final private static String RECIPE_INGREDIENT = "recipeIngredient";
-    final private static String RECIPE_NAME = "recipeName";
-    final private static String RECIPE_STEPS = "recipeSteps";
-    final private static String RECIPE_STEPS_NUMBER = "recipeStepsNumber";
-    final private static String RECIPE_VIDEO = "recipeVideo";
+    final private static String RECIPE_ITEM = "RECIPE_ITEM";
+    final private static String RECIPE_INGREDIENT = "RECIPE_INGREDIENT";
+    final private static String RECIPE_INGREDIENT_SHOW = "RECIPE_INGREDIENT_SHOW";
+    final private static String RECIPE_NAME = "RECIPE_NAME";
+    final private static String RECIPE_STEPS = "RECIPE_STEPS";
+    final private static String RECIPE_STEPS_NUMBER = "RECIPE_STEPS_NUMBER";
+    final private static String RECIPE_VIDEO = "RECIPE_VIDEO";
+
 
 
     // Strings - Variable
     private static  String recipeSingleStepDescription;
     private static String recipeSingleStepVideo = "";
     private static String recipeTitle;
-//    private static List<RecipeSteps> selectedRecipeSteps;
+
+    // XoPlayer
+    final private static String PLAYER_WINDOW_INDEX = "PLAYER_WINDOW_INDEX";
+    final private static String PLAYER_CURRENT_POSITION = "PLAYER_CURRENT_POSITION";
+    final private static String PLAYER_WHEN_READY = "PLAYER_WHEN_READY";
 
     // ======= ======= ======= Strings ======= Constants ======= =======
     public static String getRecipeItem() {
@@ -30,6 +36,10 @@ public class UiConstants {
 
     public static String getRecipeIngredient() {
         return RECIPE_INGREDIENT;
+    }
+
+    public static String getRecipeIngredientShow() {
+        return RECIPE_INGREDIENT_SHOW;
     }
 
     public static String getRecipeName() {
@@ -54,7 +64,7 @@ public class UiConstants {
     }
 
     public static void setRecipeSingleStepDescription(String recipeSingleStepDescription) {
-        UiConstants.recipeSingleStepDescription = recipeSingleStepDescription;
+        Constants.recipeSingleStepDescription = recipeSingleStepDescription;
     }
 
     public static String getRecipeSingleStepVideo() {
@@ -62,7 +72,7 @@ public class UiConstants {
     }
 
     public static void setRecipeSingleStepVideo(String recipeSingleStepVideo) {
-        UiConstants.recipeSingleStepVideo = recipeSingleStepVideo;
+        Constants.recipeSingleStepVideo = recipeSingleStepVideo;
     }
 
     public static String getRecipeTitle() {
@@ -70,16 +80,16 @@ public class UiConstants {
     }
 
     public static void setRecipeTitle(String recipeTitle) {
-        UiConstants.recipeTitle = recipeTitle;
+        Constants.recipeTitle = recipeTitle;
     }
 
     // ======= ======= ======= Integers ======= ======= =======
     public static int getCurrentStepId() {
-        return UiConstants.currentStepId;
+        return Constants.currentStepId;
     }
 
     public static void setCurrentStepId(int currentStepId) {
-        UiConstants.currentStepId = currentStepId;
+        Constants.currentStepId = currentStepId;
     }
 
     public static int getNumberOfSteps() {
@@ -87,7 +97,7 @@ public class UiConstants {
     }
 
     public static void setNumberOfSteps(int numberOfSteps) {
-        UiConstants.numberOfSteps = numberOfSteps;
+        Constants.numberOfSteps = numberOfSteps;
     }
 
     // ======= ======= ======= Booleans ======= ======= =======
@@ -97,14 +107,18 @@ public class UiConstants {
     }
 
     public static void setTwoPan(boolean twoPan) {
-        UiConstants.twoPan = twoPan;
+        Constants.twoPan = twoPan;
     }
 
-    //    public static List<RecipeSteps> getSelectedRecipeSteps() {
-//        return selectedRecipeSteps;
-//    }
-//
-//    public static void setSelectedRecipeSteps(List<RecipeSteps> selectedRecipeSteps) {
-//        UiConstants.selectedRecipeSteps = selectedRecipeSteps;
-//    }
+    public static String getPlayerWindowIndex() {
+        return PLAYER_WINDOW_INDEX;
+    }
+
+    public static String getPlayerCurrentPosition() {
+        return PLAYER_CURRENT_POSITION;
+    }
+
+    public static String getPlayerWhenReady() {
+        return PLAYER_WHEN_READY;
+    }
 }
