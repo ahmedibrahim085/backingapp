@@ -138,10 +138,12 @@ public class RecipeDetailsFragment extends Fragment {
         outState.putSerializable(Constants.getRecipeSteps(), (Serializable) recipeStepsList);
         outState.putSerializable(Constants.getRecipeIngredient(), (Serializable) recipeIngredientsList);
         outState.putString(Constants.getRecipeName(), recipeName);
-        if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
-            outState.putBoolean(Constants.getRecipeIngredientShow(), true);
-        } else {
-            outState.putBoolean(Constants.getRecipeIngredientShow(), false);
+        if ( frameLayoutIngredients != null ) { // solve a crash on not mTwoPane
+            if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+                outState.putBoolean(Constants.getRecipeIngredientShow(), true);
+            } else {
+                outState.putBoolean(Constants.getRecipeIngredientShow(), false);
+            }
         }
     }
 
@@ -165,28 +167,38 @@ public class RecipeDetailsFragment extends Fragment {
 
 
     private void showIngredientsHideInstructions() {
-        if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
-            frameLayoutIngredients.setVisibility(View.VISIBLE);
+        if ( frameLayoutIngredients != null ) {
+            if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
+                frameLayoutIngredients.setVisibility(View.VISIBLE);
+            }
         }
-        if ( constraintLayout_recipeStepDetails.getVisibility() == View.VISIBLE ) {
-            constraintLayout_recipeStepDetails.setVisibility(View.GONE);
+        if ( constraintLayout_recipeStepDetails != null ) {
+            if ( constraintLayout_recipeStepDetails.getVisibility() == View.VISIBLE ) {
+                constraintLayout_recipeStepDetails.setVisibility(View.GONE);
+            }
         }
         VideoPlayer.stopPlayer();
         VideoPlayer.releasePlayer();
     }
 
     private void showInstructionsHideIngredients() {
-        if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
-            frameLayoutIngredients.setVisibility(View.GONE);
+        if ( frameLayoutIngredients != null ) {
+            if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+                frameLayoutIngredients.setVisibility(View.GONE);
+            }
         }
-        if ( constraintLayout_recipeStepDetails.getVisibility() == View.GONE ) {
-            constraintLayout_recipeStepDetails.setVisibility(View.VISIBLE);
+        if ( constraintLayout_recipeStepDetails != null ) {
+            if ( constraintLayout_recipeStepDetails.getVisibility() == View.GONE ) {
+                constraintLayout_recipeStepDetails.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     private void hideIngredientsListLayout() {
-        if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
-            frameLayoutIngredients.setVisibility(View.GONE);
+        if ( frameLayoutIngredients != null ) {
+            if ( frameLayoutIngredients.getVisibility() == View.VISIBLE ) {
+                frameLayoutIngredients.setVisibility(View.GONE);
+            }
         }
     }
 
