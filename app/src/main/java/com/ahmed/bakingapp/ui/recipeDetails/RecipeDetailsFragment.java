@@ -77,16 +77,17 @@ public class RecipeDetailsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if ( savedInstanceState == null ) {
+        if ( savedInstanceState != null ) {
+            setRecipeDetailsInfo(savedInstanceState);
+        } else {
             if ( getArguments() != null ) {
                 setRecipeDetailsInfo(getArguments());
             }
-        } else {
-            setRecipeDetailsInfo(savedInstanceState);
         }
+
         if ( !Constants.isTwoPan() ) {
             AppBars.setActionBar((AppCompatActivity) getActivity(),
-                    Constants.getRecipeTitle(), false);
+                    Constants.getRecipeTitle(), true);
         }
     }
 
@@ -167,6 +168,8 @@ public class RecipeDetailsFragment extends Fragment {
 
 
     private void showIngredientsHideInstructions() {
+        VideoPlayer.stopPlayer();
+        VideoPlayer.releasePlayer();
         if ( frameLayoutIngredients != null ) {
             if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
                 frameLayoutIngredients.setVisibility(View.VISIBLE);
@@ -177,8 +180,6 @@ public class RecipeDetailsFragment extends Fragment {
                 constraintLayout_recipeStepDetails.setVisibility(View.GONE);
             }
         }
-        VideoPlayer.stopPlayer();
-        VideoPlayer.releasePlayer();
     }
 
     private void showInstructionsHideIngredients() {
@@ -237,9 +238,13 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
     private void setRecyclerView(View view) {
-        recyclerView = view.findViewById(R.id.list_recipe_details_steps);
+        if ( recyclerView == null ) {
+            recyclerView = view.findViewById(R.id.list_recipe_details_steps);
+        }
         // Add adapter to handle data from data source to view
-        recipeDetailsAdapter = new RecipeDetailsAdapter(recipeStepsList);
+        if ( recipeDetailsAdapter == null ) {
+            recipeDetailsAdapter = new RecipeDetailsAdapter(recipeStepsList);
+        }
         // to Open the Recipe Details when click on the item in the recycle view
         recipeDetailsAdapter.setItemClickListener(new View.OnClickListener() {
             @Override

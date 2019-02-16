@@ -13,12 +13,12 @@ import java.util.List;
 
 public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsViewHolder> {
 
-    private List<RecipeSteps> recipeSteps;
+    private static List<RecipeSteps> recipeSteps;
     private View.OnClickListener onItemClickListener;
 
 
     RecipeDetailsAdapter(List<RecipeSteps> recipeStepsList) {
-        this.recipeSteps = recipeStepsList;
+        recipeSteps = recipeStepsList;
     }
 
     @NonNull
@@ -44,7 +44,7 @@ public class RecipeDetailsAdapter extends RecyclerView.Adapter<RecipeDetailsView
     // ========================================================
 
 
-    RecipeSteps getRecipeStepDetailsItems(int position) {
+    static RecipeSteps getRecipeStepDetailsItems(int position) {
         return recipeSteps.get(position);
     }
 

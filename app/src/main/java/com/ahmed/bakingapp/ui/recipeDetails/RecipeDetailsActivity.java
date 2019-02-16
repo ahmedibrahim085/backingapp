@@ -86,7 +86,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         }
         if ( !recipeDetailsFragment.isAdded() ) {
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_master_recipe_details_list, recipeDetailsFragment)
+                    .replace(R.id.fragment_master_recipe_details_list, recipeDetailsFragment)
                     .commit();
         }
     }
