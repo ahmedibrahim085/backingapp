@@ -17,6 +17,7 @@
     <string name="navigation_goto_instructions">Go to next Instructions</string>
     <string name="navigation_back_instructions">This is the last Instruction</string>
     <string name="tv_no_video">This step has no video to play</string>
+    <string name="recipe_image">recipe_image</string>
 
 
 </resources>

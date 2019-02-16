@@ -1,12 +1,15 @@
 package com.ahmed.bakingapp.ui.steps;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.ahmed.bakingapp.App;
 import com.ahmed.bakingapp.R;
+import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeSteps;
 import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 import com.ahmed.bakingapp.utils.AppBars;
@@ -51,11 +54,15 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
 
     private void commitRecipeNavigationFragments() {
         // commit Steps Navigation Fragment
-        stepsNavigationFragment =
-                StepsNavigationFragment.newInstance(Constants.getNumberOfSteps());
-        stepsFragmentManager.beginTransaction()
-                .add(R.id.frameLayout_recipe_steps_navigation,
-                        stepsNavigationFragment).commit();
+        if ( stepsNavigationFragment == null ) {
+            stepsNavigationFragment =
+                    StepsNavigationFragment.newInstance(Constants.getNumberOfSteps());
+        }
+        if ( !stepsNavigationFragment.isAdded() ) {
+            stepsFragmentManager.beginTransaction()
+                    .replace(R.id.frameLayout_recipe_steps_navigation,
+                            stepsNavigationFragment).commit();
+        }
     }
 
 
@@ -84,7 +91,12 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
         recipeStepsInfo = recipeStepsList.get(position);
         Constants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
         Constants.setCurrentStepId(recipeStepsInfo.getStepsId());
-        Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        if ( !recipeStepsInfo.getStepsVideoURL().isEmpty() ) {
+            Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        }
+        if ( !recipeStepsInfo.getStepsThumbnailURL().isEmpty() ) {
+            Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsThumbnailURL());
+        }
         updateAppBar();
     }
 
@@ -93,6 +105,22 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
                 Constants.getRecipeTitle()
                         + " - "
                         + recipeStepsInfo.getStepsShortDescription()
-                , false);
+                , true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if ( id == android.R.id.home ) {
+            // This ID represents the Home or Up button. In the case of this
+            // activity, the Up button is shown. For
+            // more details, see the Navigation pattern on Android Design:
+            //
+            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
+            navigateUpTo(new Intent(this, RecipeIngredients.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

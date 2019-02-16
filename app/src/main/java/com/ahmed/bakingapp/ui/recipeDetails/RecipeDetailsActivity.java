@@ -67,6 +67,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
         setRecipeDetailsInfo((RecipeItem)
                 Objects.requireNonNull(savedInstanceState
                         .getSerializable(Constants.getRecipeItem())));
+        if ( !Constants.isTwoPan() ) {
+            AppBars.setActionBar((AppCompatActivity) this,
+                    recipeItem.getRecipeItemName(), true);
+            Constants.setRecipeTitle(recipeName);
+        }
         initFragments();
     }
 
@@ -125,7 +130,6 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
             AppToast.showLong(this,"This is the last Recipe Step");
         }else{
             // Do Fragment Update
-//            Constants.setCurrentStepId(Constants.getCurrentStepId()+1);
             recipeDetailsFragment.goToNextFragments(recipeStepsList.get(position));
         }
     }

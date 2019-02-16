@@ -23,11 +23,6 @@
         app:repeat_toggle_modes="none"
         app:show_timeout="50000" />
 
-    <TextView
-        android:id="@+id/tv_recipe_no_video"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin8" />
     <!-- Divider -->
     <View
         android:id="@+id/v_description_divider"

@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,7 +24,6 @@ import com.ahmed.bakingapp.ui.ingredients.IngredientActivity;
 import com.ahmed.bakingapp.ui.ingredients.IngredientsFragment;
 import com.ahmed.bakingapp.ui.steps.StepsActivity;
 import com.ahmed.bakingapp.ui.steps.StepsNavigationFragment;
-import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.Constants;
 import com.ahmed.bakingapp.utils.DividerItemDecoration;
 import com.ahmed.bakingapp.utils.VideoPlayer;
@@ -44,7 +42,7 @@ public class RecipeDetailsFragment extends Fragment {
     List<RecipeIngredients> recipeIngredientsList;
     //    ArrayList oneRecipeStepInstructions;
     // Objects
-    private RecipeSteps recipeStepsInfo;
+    private static RecipeSteps recipeStepsInfo;
     // Layouts
     private FrameLayout frameLayoutIngredients;
     private ConstraintLayout constraintLayout_recipeStepDetails;
@@ -83,11 +81,6 @@ public class RecipeDetailsFragment extends Fragment {
             if ( getArguments() != null ) {
                 setRecipeDetailsInfo(getArguments());
             }
-        }
-
-        if ( !Constants.isTwoPan() ) {
-            AppBars.setActionBar((AppCompatActivity) getActivity(),
-                    Constants.getRecipeTitle(), true);
         }
     }
 
@@ -268,10 +261,15 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
     private void setRecipeStepInfo(int position) {
-        recipeStepsInfo = recipeStepsList.get(position);
-        Constants.setRecipeSingleStepDescription(recipeStepsInfo.getStepsDescription());
-        Constants.setCurrentStepId(recipeStepsInfo.getStepsId());
-        Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        setRecipeStepsInfo(recipeStepsList.get(position));
+        Constants.setRecipeSingleStepDescription(getRecipeStepsInfo().getStepsDescription());
+        Constants.setCurrentStepId(getRecipeStepsInfo().getStepsId());
+        if ( !recipeStepsInfo.getStepsVideoURL().isEmpty() ) {
+            Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsVideoURL());
+        }
+        if ( !recipeStepsInfo.getStepsThumbnailURL().isEmpty() ) {
+            Constants.setRecipeSingleStepVideo(recipeStepsInfo.getStepsThumbnailURL());
+        }
     }
     // ======= ======= ======= SetUp UI ======= END/FIN ======= =======
 
@@ -284,7 +282,7 @@ public class RecipeDetailsFragment extends Fragment {
         Intent intent = new Intent(getActivity(), StepsActivity.class);
         intent.putExtra(Constants.getRecipeSteps(), (Serializable) recipeStep);
 //        intent.putExtra(Constants.getRecipeStepsNumber(), recipeStep.size());
-        intent.putExtra(Constants.getRecipeItem(), (Serializable) recipeStepsInfo);
+        intent.putExtra(Constants.getRecipeItem(), (Serializable) getRecipeStepsInfo());
         intent.putExtra(Constants.getRecipeName(), recipeName);
         startActivity(intent);
     }
@@ -359,12 +357,8 @@ public class RecipeDetailsFragment extends Fragment {
         }
         if ( !stepsNavigationFragment.isAdded() ) {
             replaceRecipeNavigationFragments();
-//            fragmentManagerRecipeDetails.beginTransaction()
-//                    .add(R.id.frameLayout_recipe_steps_navigation, stepsNavigationFragment)
-//                    .commit();
         } else {
             stepsNavigationFragment.updateNavigationFragmentView();
-//            replaceRecipeNavigationFragments();
         }
     }
 
@@ -382,4 +376,12 @@ public class RecipeDetailsFragment extends Fragment {
     }
     // ======= ======= ======= 4- Show Recipe Navigation Fragment ======= END/FIN ======= =======
 
+
+    public static RecipeSteps getRecipeStepsInfo() {
+        return RecipeDetailsFragment.recipeStepsInfo;
+    }
+
+    private static void setRecipeStepsInfo(RecipeSteps recipeStepsInfo) {
+        RecipeDetailsFragment.recipeStepsInfo = recipeStepsInfo;
+    }
 }

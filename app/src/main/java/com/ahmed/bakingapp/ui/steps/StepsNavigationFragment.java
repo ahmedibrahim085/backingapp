@@ -42,6 +42,9 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     TextView tv_oneRecipeStepInstruction;
     ImageView img_previousRecipe;
     ImageView img_nextRecipe;
+    View stepsNavigationView;
+    View v_description_divider;
+    View v_navigation_divider;
     PlayerView exoPlayerView;
 
 
@@ -94,7 +97,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
                              Bundle savedInstanceState) {
         // Steps Navigation FrameLayout
         // Inflate the layout for this fragment
-        View stepsNavigationView = inflater.inflate(R.layout.fragment_recipe_steps_navigation,
+        stepsNavigationView = inflater.inflate(R.layout.fragment_recipe_steps_navigation,
                 container, false);
         setNavigationFragmentUI(stepsNavigationView);
         return stepsNavigationView;
@@ -111,9 +114,8 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     @Override
     public void onStop() {
         super.onStop();
-        if ( !Constants.isTwoPan() ) {
-            VideoPlayer.releasePlayer();
-        }
+        VideoPlayer.stopPlayer();
+        VideoPlayer.releasePlayer();
     }
     @Override
     public void onDetach() {
@@ -168,45 +170,22 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
         }
     }
 
-    private void hideSystemUiFullScreen() {
-/*        this.exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-        | View.SYSTEM_UI_FLAG_FULLSCREEN
-        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-        | View.SYSTEM_UI_FLAG_IMMERSIVE);*/
-
-
-        if ( ((AppCompatActivity) getActivity()).getSupportActionBar() != null ) {
-            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
-        }
-        this.exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_IMMERSIVE);
-    }
-
-    private void hideSystemUi() {
-        exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-    }
-
 
     //  ======= ======= ======= Fragment Life Cycle ======= END/FIN =======
 
     //  ======= ======= ======= Fragment UI ======= START =======
     private void setNavigationFragmentUI(View view) {
+        // Organized based on a normal Navigation logic
         // This is Organized vertically as in the view
         // Video
         exoPlayerView = view.findViewById(R.id.video_view);
+        // Divider
+        v_description_divider = stepsNavigationView.findViewById(R.id.v_description_divider);
         // Recipe Step Instructions
         tv_oneRecipeStepInstruction = view.findViewById(R.id.tv_oneRecipeStepInstruction);
         // Navigation
-        // Organized based on a normal Navigation logic
+        // Divider - Navigation
+        v_navigation_divider = stepsNavigationView.findViewById(R.id.v_navigation_divider);
         // Navigation - Previous
         img_previousRecipe = view.findViewById(R.id.img_previous_recipe);
         // Navigation - position
@@ -229,9 +208,11 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     private void updateRecipeVideoURL() {
         if ( Constants.getRecipeSingleStepVideo().isEmpty() ) {
             exoPlayerView.setVisibility(View.GONE);
+            VideoPlayer.stopPlayer();
+            VideoPlayer.releasePlayer();
         } else {
-            exoPlayerView.setVisibility(View.VISIBLE);
             Uri mediaUri = Uri.parse(Constants.getRecipeSingleStepVideo());
+            exoPlayerView.setVisibility(View.VISIBLE);
             if ( VideoPlayer.getmExoPlayer() == null ) {
                 VideoPlayer.initializePlayer(mediaUri, exoPlayerView, getActivity());
             }
@@ -250,7 +231,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
                 if ( Constants.getCurrentStepId() < 0 ) {
                     Constants.setCurrentStepId(0);
                 }
-                VideoPlayer.getmExoPlayer().stop();
+                VideoPlayer.stopPlayer();
                 onRecipeNavigationClickListener.onPreviousRecipeSelected(Constants.getCurrentStepId());
                 updateNavigationFragmentView();
             }
@@ -265,7 +246,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
                 if ( Constants.getCurrentStepId() >= numberOfRecipeSteps ) {
                     Constants.setCurrentStepId(numberOfRecipeSteps - 1);
                 }
-                VideoPlayer.getmExoPlayer().stop();
+                VideoPlayer.stopPlayer();
                 onRecipeNavigationClickListener.onNextRecipeSelected(Constants.getCurrentStepId());
                 updateNavigationFragmentView();
             }
@@ -301,8 +282,62 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     }
     // ======= Steps Navigation Controllers - User Navigates - ======= END/FIN =======
 
+
+    private void hideSystemUiFullScreen() {
+        if ( ((AppCompatActivity) getActivity()).getSupportActionBar() != null ) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+        }
+        showOrHideOtherViewElements(View.GONE);
+        this.exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_IMMERSIVE);
+    }
+
+    private void hideSystemUi() {
+        if ( ((AppCompatActivity) getActivity()).getSupportActionBar() != null ) {
+            ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        }
+        showOrHideOtherViewElements(View.VISIBLE);
+        exoPlayerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+    }
+
+    void showOrHideOtherViewElements(int visability) {
+        if ( tv_numberOfSteps != null ) {
+            tv_numberOfSteps.setVisibility(visability);
+        }
+        if ( tv_oneRecipeStepInstruction != null ) {
+            tv_oneRecipeStepInstruction.setVisibility(visability);
+        }
+
+        if ( img_previousRecipe != null ) {
+            img_previousRecipe.setVisibility(visability);
+        }
+        if ( img_nextRecipe != null ) {
+            img_nextRecipe.setVisibility(visability);
+        }
+        if ( v_description_divider != null ) {
+            v_description_divider.setVisibility(visability);
+        }
+
+        if ( v_navigation_divider != null ) {
+            v_navigation_divider.setVisibility(visability);
+        }
+
+        if ( img_nextRecipe != null ) {
+            img_nextRecipe.setVisibility(visability);
+        }
+
+        if ( img_previousRecipe != null ) {
+            img_previousRecipe.setVisibility(visability);
+        }
+    }
+
+
     //  ======= ======= ======= Fragment UI ======= END/FIN =======
-
-
 
 }
