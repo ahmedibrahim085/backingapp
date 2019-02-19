@@ -65,6 +65,15 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     public void onPreviousRecipeSelected(int position) {
         if ( position < 0 ) {

@@ -60,7 +60,7 @@ public class VideoPlayer implements Player.EventListener {
         mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                 context, userAgent), new DefaultExtractorsFactory(), null, null);
         getmExoPlayer().prepare(mediaSource);
-        getmExoPlayer().setPlayWhenReady(false);
+        getmExoPlayer().setPlayWhenReady(true);
     }
 
     /**

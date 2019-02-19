@@ -145,20 +145,21 @@ public class BakingAppWidget extends AppWidgetProvider {
             String convertedRecipeSteps = SharedPrefs.getRecipeSteps();
             recipeSteps = ObjectConverter.stringToObjectS(convertedRecipeSteps);
             showOrHideWidgetViews(View.VISIBLE);
-            // Step Instruction
-            views.setTextViewText(R.id.apw_tv_oneRecipeStepInstruction,
-                    recipeSteps.get(stepCounter).getStepsDescription());
-            // Next Recipe
-            views.setOnClickPendingIntent(R.id.apw_img_next_recipe, getNextRecipeStepIntent(context, NextRecipeClickTag));
-            // Number of steps apw_tv_numberOfSteps
-            String stepbyStepCounter =
-                    String.format(context.getResources().getString(R.string.recipe_step_counter),
-                            stepCounter, recipeSteps.size() - 1);
-            views.setTextViewText(R.id.apw_tv_numberOfSteps, String.valueOf(stepbyStepCounter));
-            // previous Recipe
-            views.setOnClickPendingIntent(R.id.apw_img_previous_recipe, getPreviousRecipeStepIntent(context,
-                    PreviousRecipeClickTag));
-
+            if ( recipeSteps != null ) {
+                // Step Instruction
+                views.setTextViewText(R.id.apw_tv_oneRecipeStepInstruction,
+                        recipeSteps.get(stepCounter).getStepsDescription());
+                // Next Recipe
+                views.setOnClickPendingIntent(R.id.apw_img_next_recipe, getNextRecipeStepIntent(context, NextRecipeClickTag));
+                // Number of steps apw_tv_numberOfSteps
+                String stepbyStepCounter =
+                        String.format(context.getResources().getString(R.string.recipe_step_counter),
+                                stepCounter, recipeSteps.size() - 1);
+                views.setTextViewText(R.id.apw_tv_numberOfSteps, String.valueOf(stepbyStepCounter));
+                // previous Recipe
+                views.setOnClickPendingIntent(R.id.apw_img_previous_recipe, getPreviousRecipeStepIntent(context,
+                        PreviousRecipeClickTag));
+            }
         }
     }
 

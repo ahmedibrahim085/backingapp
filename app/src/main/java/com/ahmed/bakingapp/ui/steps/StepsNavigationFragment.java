@@ -47,6 +47,9 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     View v_navigation_divider;
     PlayerView exoPlayerView;
 
+    private static int currentWindow;
+    private static long playbackPosition;
+    private static boolean playWhenReady;
 
     public StepsNavigationFragment() {
         // Required empty public constructor
@@ -106,9 +109,40 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     @Override
     public void onResume() {
         super.onResume();
-        VideoPlayer.initializeMediaSession(getActivity());
-        VideoPlayer.initializePlayer(Uri.parse(Constants.getRecipeSingleStepVideo()), exoPlayerView, getActivity());
+        if ( VideoPlayer.getmMediaSession() == null ) {
+            VideoPlayer.initializeMediaSession(getActivity());
+        }
+        if ( VideoPlayer.getmExoPlayer() == null ) {
+            VideoPlayer.initializePlayer(Uri.parse(Constants.getRecipeSingleStepVideo()), exoPlayerView, getActivity());
+        }
+        int currentOrientation = getActivity().getResources().getConfiguration().orientation;
+        if ( currentOrientation == Configuration.ORIENTATION_LANDSCAPE ) {
+            if ( !Constants.isTwoPan() ) {
+                hideSystemUiFullScreen();
+            }
+        } else {
+            if ( !Constants.isTwoPan() ) {
+                hideSystemUi();
+            }
+        }
+        if ( exoPlayerView.getVisibility() == View.VISIBLE ) {
+            if ( VideoPlayer.getmExoPlayer() == null ) {
+                VideoPlayer.initializeMediaSession(getActivity());
+                VideoPlayer.initializePlayer(Uri.parse(Constants.getRecipeSingleStepVideo()), exoPlayerView, getActivity());
+            }
+
+            VideoPlayer.getmExoPlayer().seekTo(StepsNavigationFragment.currentWindow,
+                    StepsNavigationFragment.playbackPosition);
+            VideoPlayer.getmExoPlayer().setPlayWhenReady(StepsNavigationFragment.playWhenReady);
+        }
+        // updating the player seek will be down the tree of the update NavigationFragment
         updateNavigationFragmentView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        VideoPlayer.stopPlayer();
     }
 
     @Override
@@ -126,13 +160,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        updateNavigationFragmentView();
-        int currentOrientation = getActivity().getResources().getConfiguration().orientation;
-        if ( currentOrientation == Configuration.ORIENTATION_LANDSCAPE ) {
-            hideSystemUiFullScreen();
-        } else {
-            hideSystemUi();
-        }
+
     }
 
     @Override
@@ -140,14 +168,19 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
         super.onSaveInstanceState(outState);
         if ( VideoPlayer.getmExoPlayer() != null ) {
             // ExoPLayer Window Index
+            StepsNavigationFragment.currentWindow =
+                    VideoPlayer.getmExoPlayer().getCurrentWindowIndex();
             outState.putInt(Constants.getPlayerWindowIndex(),
-                    VideoPlayer.getmExoPlayer().getCurrentWindowIndex());
+                    StepsNavigationFragment.currentWindow);
             // ExoPLayer Current Position
+            StepsNavigationFragment.playbackPosition =
+                    VideoPlayer.getmExoPlayer().getCurrentPosition();
             outState.putLong(Constants.getPlayerCurrentPosition(),
-                    VideoPlayer.getmExoPlayer().getCurrentPosition());
+                    StepsNavigationFragment.playbackPosition);
             // ExoPLayer boolean Play When Ready
+            StepsNavigationFragment.playWhenReady = VideoPlayer.getmExoPlayer().getPlayWhenReady();
             outState.putBoolean(Constants.getPlayerWhenReady(),
-                    VideoPlayer.getmExoPlayer().getPlayWhenReady());
+                    StepsNavigationFragment.playWhenReady);
         }
         outState.putInt(Constants.getRecipeStepsNumber(), numberOfRecipeSteps);
     }
@@ -168,6 +201,7 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
                 VideoPlayer.getmExoPlayer().setPlayWhenReady(savedInstanceState.getBoolean(Constants.getPlayerWhenReady()));
             }
         }
+
     }
 
 
@@ -209,7 +243,6 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
         if ( Constants.getRecipeSingleStepVideo().isEmpty() ) {
             exoPlayerView.setVisibility(View.GONE);
             VideoPlayer.stopPlayer();
-            VideoPlayer.releasePlayer();
         } else {
             Uri mediaUri = Uri.parse(Constants.getRecipeSingleStepVideo());
             exoPlayerView.setVisibility(View.VISIBLE);
@@ -217,6 +250,8 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
                 VideoPlayer.initializePlayer(mediaUri, exoPlayerView, getActivity());
             }
             VideoPlayer.setPlayerMediaSource(getActivity(), mediaUri);
+            VideoPlayer.getmExoPlayer().seekTo(StepsNavigationFragment.currentWindow,
+                    StepsNavigationFragment.playbackPosition);
         }
     }
 
@@ -306,34 +341,26 @@ public class StepsNavigationFragment extends Fragment implements Player.EventLis
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
-    void showOrHideOtherViewElements(int visability) {
+    void showOrHideOtherViewElements(int visibility) {
         if ( tv_numberOfSteps != null ) {
-            tv_numberOfSteps.setVisibility(visability);
+            tv_numberOfSteps.setVisibility(visibility);
         }
         if ( tv_oneRecipeStepInstruction != null ) {
-            tv_oneRecipeStepInstruction.setVisibility(visability);
+            tv_oneRecipeStepInstruction.setVisibility(visibility);
         }
 
         if ( img_previousRecipe != null ) {
-            img_previousRecipe.setVisibility(visability);
+            img_previousRecipe.setVisibility(visibility);
         }
         if ( img_nextRecipe != null ) {
-            img_nextRecipe.setVisibility(visability);
+            img_nextRecipe.setVisibility(visibility);
         }
         if ( v_description_divider != null ) {
-            v_description_divider.setVisibility(visability);
+            v_description_divider.setVisibility(visibility);
         }
 
         if ( v_navigation_divider != null ) {
-            v_navigation_divider.setVisibility(visability);
-        }
-
-        if ( img_nextRecipe != null ) {
-            img_nextRecipe.setVisibility(visability);
-        }
-
-        if ( img_previousRecipe != null ) {
-            img_previousRecipe.setVisibility(visability);
+            v_navigation_divider.setVisibility(visibility);
         }
     }
 

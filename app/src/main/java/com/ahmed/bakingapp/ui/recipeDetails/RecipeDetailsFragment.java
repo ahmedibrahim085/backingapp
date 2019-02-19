@@ -117,10 +117,17 @@ public class RecipeDetailsFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if ( Constants.isTwoPan() ) {
+            VideoPlayer.releasePlayer();
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         if ( Constants.isTwoPan() ) {
-            Log.e(TAG, "onStop onStop onStop onStop onStop onStop");
             VideoPlayer.releasePlayer();
         }
     }
@@ -138,6 +145,17 @@ public class RecipeDetailsFragment extends Fragment {
             } else {
                 outState.putBoolean(Constants.getRecipeIngredientShow(), false);
             }
+        }
+        if ( VideoPlayer.getmExoPlayer() != null ) {
+            // ExoPLayer Window Index
+            outState.putInt(Constants.getPlayerWindowIndex(),
+                    VideoPlayer.getmExoPlayer().getCurrentWindowIndex());
+            // ExoPLayer Current Position
+            outState.putLong(Constants.getPlayerCurrentPosition(),
+                    VideoPlayer.getmExoPlayer().getCurrentPosition());
+            // ExoPLayer boolean Play When Ready
+            outState.putBoolean(Constants.getPlayerWhenReady(),
+                    VideoPlayer.getmExoPlayer().getPlayWhenReady());
         }
     }
 
@@ -162,7 +180,6 @@ public class RecipeDetailsFragment extends Fragment {
 
     private void showIngredientsHideInstructions() {
         VideoPlayer.stopPlayer();
-        VideoPlayer.releasePlayer();
         if ( frameLayoutIngredients != null ) {
             if ( frameLayoutIngredients.getVisibility() == View.GONE ) {
                 frameLayoutIngredients.setVisibility(View.VISIBLE);
