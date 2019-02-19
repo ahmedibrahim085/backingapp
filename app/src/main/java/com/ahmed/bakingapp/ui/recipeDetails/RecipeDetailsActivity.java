@@ -1,14 +1,18 @@
 package com.ahmed.bakingapp.ui.recipeDetails;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ahmed.bakingapp.App;
+import com.ahmed.bakingapp.BakingAppWidget;
 import com.ahmed.bakingapp.R;
 import com.ahmed.bakingapp.models.RecipeIngredients;
 import com.ahmed.bakingapp.models.RecipeItem;
@@ -18,6 +22,8 @@ import com.ahmed.bakingapp.ui.listeners.OnRecipeNavigationClickListener;
 import com.ahmed.bakingapp.utils.AppBars;
 import com.ahmed.bakingapp.utils.AppToast;
 import com.ahmed.bakingapp.utils.Constants;
+import com.ahmed.bakingapp.utils.ObjectConverter;
+import com.ahmed.bakingapp.utils.SharedPrefs;
 
 import java.util.List;
 import java.util.Objects;
@@ -56,6 +62,13 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(Constants.getRecipeItem(), recipeItem);
@@ -68,7 +81,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
                 Objects.requireNonNull(savedInstanceState
                         .getSerializable(Constants.getRecipeItem())));
         if ( !Constants.isTwoPan() ) {
-            AppBars.setActionBar((AppCompatActivity) this,
+            AppBars.setAppBars((AppCompatActivity) this,
                     recipeItem.getRecipeItemName(), true);
             Constants.setRecipeTitle(recipeName);
         }
@@ -98,6 +111,21 @@ public class RecipeDetailsActivity extends AppCompatActivity implements OnRecipe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if ( id == R.id.action_image ) {
+            Log.d(TAG, "add to widget");
+            SharedPrefs.setRecipeName(recipeName);
+            String convertedRecipeStepsList =
+                    ObjectConverter.objectToString(recipeStepsList);
+            SharedPrefs.setRecipeSteps(convertedRecipeStepsList);
+            AppToast.showLong(this, recipeName + "is now added to widget");
+            Intent intent = new Intent(this, BakingAppWidget.class);
+            intent.setAction("updateWidget");
+            int[] ids = AppWidgetManager.getInstance(getApplication())
+                    .getAppWidgetIds(new ComponentName(getApplication(), BakingAppWidget.class));
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+            sendBroadcast(intent);
+            return true;
+        }
         if (id == android.R.id.home) {
             // This ID represents the Home or Up button. In the case of this
             // activity, the Up button is shown. For

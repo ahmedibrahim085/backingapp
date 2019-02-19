@@ -16,7 +16,8 @@ public class AppBars {
         setActionBar(activity,toolBarTitle,actionBarEnabled);
         setToolBar(activity, toolBarTitle);
     }
-    public static void setActionBar(AppCompatActivity activity, String toolBarTitle,
+
+    private static void setActionBar(AppCompatActivity activity, String toolBarTitle,
                                      Boolean actionBarEnabled){
         // Show the Up button in the action bar.
         ActionBar actionBar = activity.getSupportActionBar();

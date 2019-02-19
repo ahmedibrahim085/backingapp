@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.res.Configuration;
 
 import com.ahmed.bakingapp.utils.Constants;
+import com.ahmed.bakingapp.utils.SharedPrefs;
 
 public  class App extends Application {
 
     private static Context appContext;
     private static String UNIQUE_APPLICATION_PREFS_ID;
-//    private static AppDatabase appDatabase;
 
     private static boolean debuggable;
     private static final String TAG = App.class.getSimpleName();
@@ -32,9 +32,8 @@ public  class App extends Application {
     }
 
     private void initiateAppSharedPrefs(Context context){
-//        SharedPrefs.InitiateAppSharedPrefs(context);
-//        SharedPrefs.getInstance();
-
+        SharedPrefs.InitiateAppSharedPrefs(context);
+        SharedPrefs.getInstance();
     }
 
     public static Context getAppContext() {
@@ -53,14 +52,6 @@ public  class App extends Application {
         UNIQUE_APPLICATION_PREFS_ID = uniqueApplicationPrefsId;
     }
 
-/*    public static AppDatabase getAppDatabase() {
-        return appDatabase;
-    }
-
-    public static void setAppDatabase(AppDatabase appDatabase) {
-        App.appDatabase = appDatabase;
-    }*/
-
     public static boolean isDebuggable() {
         return debuggable;
     }
@@ -71,7 +62,6 @@ public  class App extends Application {
 
     public static boolean isW900DpSupported() {
         Configuration configuration = getAppContext().getResources().getConfiguration();
-//        Log.e(TAG, "configuration.smallestScreenWidthDp: " + configuration.smallestScreenWidthDp);
         return configuration.smallestScreenWidthDp >= 900;
     }
 

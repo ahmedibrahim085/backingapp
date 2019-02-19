@@ -16,6 +16,7 @@ public class Constants {
     final private static String RECIPE_STEPS = "RECIPE_STEPS";
     final private static String RECIPE_STEPS_NUMBER = "RECIPE_STEPS_NUMBER";
     final private static String RECIPE_VIDEO = "RECIPE_VIDEO";
+    final private static String WIDGET_RECIPE_NAME = "NO RECIPE SELECTED";
 
 
 
@@ -56,6 +57,10 @@ public class Constants {
 
     public static String getRecipeVideo() {
         return RECIPE_VIDEO;
+    }
+
+    public static String getWidgetRecipeName() {
+        return WIDGET_RECIPE_NAME;
     }
 
     // ======= ======= ======= Strings ======= Variable ======= =======

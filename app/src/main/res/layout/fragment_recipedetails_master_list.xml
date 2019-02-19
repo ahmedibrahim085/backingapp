@@ -11,8 +11,7 @@
         android:id="@+id/tv_recipe_ingredients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="@dimen/margin4"
+        android:layout_gravity="start"
         android:layout_marginEnd="@dimen/margin4"
         android:textAppearance="?attr/textAppearanceListItem"
         tools:text="This is a Recipe Ingredient" />
@@ -25,7 +24,7 @@
         android:orientation="vertical"
         app:layoutManager="android.support.v7.widget.LinearLayoutManager"
         tools:context=".ui.recipeDetails.RecipeDetailsActivity"
-        tools:itemCount="3"/>
+        tools:itemCount="3" />
 
 </LinearLayout>
 

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+// I fetched it from Internet
 /**
  * Created by hscv5540 on 5/22/2017.
  * This is a class that a friend of mine shared with me to allow me to add the divider

@@ -38,11 +38,10 @@ public class IngredientsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
         if (getArguments() != null) {
             recipeIngredientsList = (List<RecipeIngredients>) getArguments().getSerializable("recipeIngredients");
             if ( !Constants.isTwoPan() ) {
-                AppBars.setActionBar((AppCompatActivity) getActivity(),
+                AppBars.setAppBars((AppCompatActivity) getActivity(),
                         Constants.getRecipeTitle() + " - Ingredients", false);
             }
         }

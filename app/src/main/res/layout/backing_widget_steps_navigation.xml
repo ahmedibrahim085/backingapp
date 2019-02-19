@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:id="@+id/apw_tv_recipeTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin8"
+        android:gravity="center_horizontal"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
+
+
+    <TextView
+        android:id="@+id/apw_tv_oneRecipeStepInstruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin8" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/apw_img_previous_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/previous_recipe"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_margin="@dimen/margin8"
+            android:contentDescription="@string/describe_previous_recipe_navigation_image" />
+
+
+        <TextView
+            android:id="@+id/apw_tv_numberOfSteps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin8"
+            app:layout_constraintStart_toStartOf="@+id/img_previous_recipe"
+            app:layout_constraintTop_toTopOf="@+id/img_previous_recipe" />
+
+
+        <ImageView
+            android:id="@+id/apw_img_next_recipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin8"
+            android:contentDescription="@string/describe_next_recipe_navigation_image"
+            android:src="@drawable/next_recipe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_numberOfSteps"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+</LinearLayout>

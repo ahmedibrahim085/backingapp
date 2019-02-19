@@ -101,7 +101,7 @@ public class StepsActivity extends AppCompatActivity implements OnRecipeNavigati
     }
 
     private void updateAppBar() {
-        AppBars.setActionBar((AppCompatActivity) this,
+        AppBars.setAppBars((AppCompatActivity) this,
                 Constants.getRecipeTitle()
                         + " - "
                         + recipeStepsInfo.getStepsShortDescription()

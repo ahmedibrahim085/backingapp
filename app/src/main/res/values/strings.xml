@@ -18,6 +18,9 @@
     <string name="navigation_back_instructions">This is the last Instruction</string>
     <string name="tv_no_video">This step has no video to play</string>
     <string name="recipe_image">recipe_image</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="add_to_widget">add to widget</string>
 
 
 </resources>
